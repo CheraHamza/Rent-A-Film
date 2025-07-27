@@ -18,7 +18,7 @@ const StyledLogo = styled.img`
 
 const Header = () => {
 	return (
-		<StyledHeader>
+		<StyledHeader className="header">
 			<StyledLogo src={logo} alt="logo"></StyledLogo>
 			<Navbar></Navbar>
 			<CartIcon></CartIcon>
