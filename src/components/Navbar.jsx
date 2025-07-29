@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Button from "./Button";
 
 const StyledNavbar = styled.div`
 	display: flex;
@@ -6,27 +7,12 @@ const StyledNavbar = styled.div`
 	gap: 15vw;
 `;
 
-const StyledButton = styled.button`
-	font-family: "DM Serif Display";
-	font-size: 18px;
-	color: white;
-
-	background-color: transparent;
-	border: none;
-
-	cursor: pointer;
-
-	&:hover {
-		color: #979797;
-	}
-`;
-
 const Navbar = () => {
 	return (
 		<StyledNavbar>
-			<StyledButton>Home</StyledButton>
-			<StyledButton>Catalog</StyledButton>
-			<StyledButton>WishList</StyledButton>
+			<Button text={"Home"}></Button>
+			<Button text={"Catalog"}></Button>
+			<Button text={"Wishlist"}></Button>
 		</StyledNavbar>
 	);
 };
