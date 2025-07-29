@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 const StyledNavbar = styled.div`
 	display: flex;
@@ -8,11 +9,28 @@ const StyledNavbar = styled.div`
 `;
 
 const Navbar = () => {
+	const navigate = useNavigate();
+
 	return (
 		<StyledNavbar>
-			<Button text={"Home"}></Button>
-			<Button text={"Catalog"}></Button>
-			<Button text={"Wishlist"}></Button>
+			<Button
+				onClick={() => {
+					navigate("/");
+				}}
+				text={"Home"}
+			></Button>
+			<Button
+				onClick={() => {
+					navigate("/catalog");
+				}}
+				text={"Catalog"}
+			></Button>
+			<Button
+				onClick={() => {
+					navigate("/wishlist");
+				}}
+				text={"Wishlist"}
+			></Button>
 		</StyledNavbar>
 	);
 };
