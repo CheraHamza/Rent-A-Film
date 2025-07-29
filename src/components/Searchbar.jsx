@@ -16,9 +16,10 @@ const Styledinput = styled.input.attrs({ type: "search" })`
 `;
 
 const StyledButton = styled.button`
-	width: 30px;
+	width: 40px;
 	height: 30px;
 	background-color: transparent;
+	color: white;
 	border: 1px solid white;
 
 	padding: 3px;
@@ -29,17 +30,13 @@ const StyledButton = styled.button`
 	&:hover {
 		background-color: white;
 		border-left-color: black;
-
-		.lucide-search {
-			color: black;
-		}
+		color: black;
 	}
 `;
 
 const StyledIcon = styled(SearchIcon)`
 	width: 100%;
 	height: 100%;
-	color: white;
 
 	transition: all 0.15s ease-in-out;
 `;
