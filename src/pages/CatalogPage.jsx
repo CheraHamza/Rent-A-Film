@@ -2,6 +2,9 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Searchbar from "../components/Searchbar";
 import { FilterIcon } from "lucide-react";
+import MovieCard from "../components/MovieCard";
+import { useFetchData } from "../utils/Fetch";
+import { format } from "date-fns";
 
 const StyledCatalogPage = styled.div``;
 
@@ -49,12 +52,16 @@ const PostersWrapper = styled.section`
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	gap: 20px;
+	gap: 30px;
 
 	padding: 20px 30px;
 `;
 
 const CatalogPage = () => {
+	const { data } = useFetchData(
+		"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
+	);
+
 	return (
 		<StyledCatalogPage>
 			<Header></Header>
@@ -67,11 +74,17 @@ const CatalogPage = () => {
 					<Searchbar></Searchbar>
 				</FilterBar>
 				<PostersWrapper>
-					<img src="https://placehold.co/180x300" alt="" />
-					<img src="https://placehold.co/180x300" alt="" />
-					<img src="https://placehold.co/180x300" alt="" />
-					<img src="https://placehold.co/180x300" alt="" />
-					<img src="https://placehold.co/180x300" alt="" />
+					{data &&
+						data.results.map((movieDetails) => (
+							<MovieCard
+								key={movieDetails.id}
+								id={movieDetails.id}
+								poster={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+								title={movieDetails.title}
+								date={format(movieDetails.release_date, "MMM dd, yyyy")}
+								rating={movieDetails.vote_average.toFixed(2)}
+							></MovieCard>
+						))}
 				</PostersWrapper>
 			</MainSection>
 		</StyledCatalogPage>
