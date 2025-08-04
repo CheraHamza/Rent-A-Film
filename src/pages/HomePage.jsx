@@ -30,18 +30,6 @@ const FrameWrapper = styled.div`
 
 	.lastFrame {
 		gap: 100px;
-
-		button {
-			align-self: center;
-			width: fit-content;
-			border: 1px solid white;
-			padding: 10px 20px;
-
-			&:hover {
-				background-color: white;
-				color: black;
-			}
-		}
 	}
 `;
 
@@ -84,6 +72,11 @@ const StyledParagraph = styled.p`
 	letter-spacing: 3px;
 `;
 
+const BrowseButton = styled(Button)`
+	align-self: center;
+	padding: 10px 20px;
+`;
+
 function HomePage() {
 	return (
 		<StyledHomePage>
@@ -122,7 +115,7 @@ function HomePage() {
 						<StyledH1>Find Your Next Frame.</StyledH1>
 						<StyledH1>Rent. Watch. Drift.</StyledH1>
 					</section>
-					<Button text={"Browse Catalog"}></Button>
+					<BrowseButton>Browse Catalog</BrowseButton>
 				</Frame>
 			</FrameWrapper>
 		</StyledHomePage>

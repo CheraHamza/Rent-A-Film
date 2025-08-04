@@ -1,24 +1,40 @@
 import styled from "styled-components";
 
-const StyledButton = styled.button`
+const Button = styled.button`
 	font-family: "DM Serif Display";
 	font-size: 18px;
 	color: white;
 
 	background-color: transparent;
-	border: none;
+	border: 1px solid white;
 
 	cursor: pointer;
 
-	transition: all 0.15s ease-in-out;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 
 	&:hover {
-		color: #979797;
+		color: black;
+		background-color: white;
+	}
+
+	&.borderless {
+		border: none;
+
+		&:hover {
+			color: rgb(255, 255, 255, 0.5);
+			background-color: transparent;
+		}
+	}
+
+	&.reverse {
+		color: black;
+		background-color: white;
+
+		&:hover {
+			color: white;
+			background-color: transparent;
+		}
 	}
 `;
-
-const Button = ({ text, onClick }) => {
-	return <StyledButton onClick={onClick}>{text}</StyledButton>;
-};
 
 export default Button;

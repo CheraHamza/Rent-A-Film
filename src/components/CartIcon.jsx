@@ -1,18 +1,20 @@
 import styled from "styled-components";
 import shoppingcart from "/Icons/shopping-cart.svg";
+import Button from "./Button";
 
-const StyledCart = styled.button`
+const StyledCart = styled(Button)`
 	width: 60px;
 	height: 60px;
 	position: relative;
-	background-color: transparent;
-	border: none;
 
-	cursor: pointer;
+	& img,
+	span {
+		transition: opacity 0.15s ease-in-out;
+	}
 
 	&:hover img,
 	&:hover span {
-		opacity: 0.8;
+		opacity: 0.5;
 	}
 `;
 
@@ -41,9 +43,9 @@ const Counter = styled.span`
 	border-radius: 50px;
 `;
 
-const CartIcon = ({ count = 99 }) => {
+const CartIcon = ({ count = 2 }) => {
 	return (
-		<StyledCart>
+		<StyledCart className="borderless">
 			<StyledImg src={shoppingcart} alt="shopping cart"></StyledImg>
 			<Counter>{count}</Counter>
 		</StyledCart>

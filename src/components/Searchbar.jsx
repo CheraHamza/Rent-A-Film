@@ -1,5 +1,6 @@
 import { SearchIcon } from "lucide-react";
 import styled from "styled-components";
+import Button from "./Button";
 
 const StyledSearchBar = styled.div`
 	display: flex;
@@ -15,30 +16,20 @@ const Styledinput = styled.input.attrs({ type: "search" })`
 	outline: none;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
 	width: 40px;
 	height: 30px;
-	background-color: transparent;
-	color: white;
-	border: 1px solid white;
 
 	padding: 3px;
-	cursor: pointer;
-
-	transition: all 0.15s ease-in-out;
 
 	&:hover {
-		background-color: white;
 		border-left-color: black;
-		color: black;
 	}
 `;
 
 const StyledIcon = styled(SearchIcon)`
 	width: 100%;
 	height: 100%;
-
-	transition: all 0.15s ease-in-out;
 `;
 
 const Searchbar = () => {

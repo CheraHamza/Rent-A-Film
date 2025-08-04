@@ -14,23 +14,29 @@ const Navbar = () => {
 	return (
 		<StyledNavbar>
 			<Button
+				className="borderless"
 				onClick={() => {
 					navigate("/");
 				}}
-				text={"Home"}
-			></Button>
+			>
+				Home
+			</Button>
 			<Button
+				className="borderless"
 				onClick={() => {
 					navigate("/catalog");
 				}}
-				text={"Catalog"}
-			></Button>
+			>
+				Catalog
+			</Button>
 			<Button
+				className="borderless"
 				onClick={() => {
 					navigate("/wishlist");
 				}}
-				text={"Wishlist"}
-			></Button>
+			>
+				Wishlist
+			</Button>
 		</StyledNavbar>
 	);
 };

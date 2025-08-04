@@ -1,4 +1,5 @@
 import { HeartIcon, StarIcon } from "lucide-react";
+import Button from "../components/Button";
 import styled from "styled-components";
 import { useState } from "react";
 
@@ -7,7 +8,7 @@ const StyledMovieCard = styled.div`
 	border: 0.5px solid rgba(255, 255, 255, 0.3);
 	color: white;
 
-	box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
+	box-shadow: 0 2px 5px rgba(255, 255, 255, 0.15);
 `;
 
 const StyledImgWrapper = styled.div`
@@ -67,18 +68,15 @@ const StyledStar = styled(StarIcon)`
 	fill: white;
 `;
 
-const CardOverlay = styled.div`
+const ImageOverlay = styled.div`
 	opacity: 0;
 	pointer-events: none;
 
 	position: absolute;
 
 	display: flex;
-	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-
-	gap: 10px;
 
 	width: 100%;
 	height: 100%;
@@ -88,20 +86,7 @@ const CardOverlay = styled.div`
 	transition: opacity 0.3s ease-in-out;
 `;
 
-const RentedWrapper = styled.section`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	p {
-		font-family: "DM Serif Display";
-		font-size: 20px;
-		font-weight: 500;
-		letter-spacing: 2px;
-	}
-`;
-
-const LikedButton = styled.button`
+const LikeButton = styled(Button)`
 	position: absolute;
 
 	top: 15px;
@@ -110,11 +95,12 @@ const LikedButton = styled.button`
 	width: 35px;
 	height: 35px;
 
-	color: white;
-	background-color: transparent;
 	border: none;
 
-	cursor: pointer;
+	&:hover {
+		background-color: transparent;
+		color: white;
+	}
 
 	&:hover .lucide-heart {
 		fill: white;
@@ -125,31 +111,15 @@ const LikedButton = styled.button`
 	}
 `;
 
+const CartButton = styled(Button)`
+	height: 40px;
+	width: 150px;
+	font-size: 16px;
+`;
+
 const StyledHeartIcon = styled(HeartIcon)`
 	width: 100%;
 	height: 100%;
-`;
-
-const StyledButton = styled.button`
-	width: 150px;
-
-	background-color: transparent;
-	border: 1px solid white;
-
-	color: white;
-	padding: 5px;
-
-	font-family: "DM Serif Display";
-	font-size: 16px;
-	font-weight: 400;
-
-	transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
-
-	cursor: pointer;
-	&:hover {
-		background-color: white;
-		color: black;
-	}
 `;
 
 const MovieCard = ({ id, poster, title, date, rating }) => {
@@ -167,22 +137,18 @@ const MovieCard = ({ id, poster, title, date, rating }) => {
 	return (
 		<StyledMovieCard id={id}>
 			<StyledImgWrapper>
-				<CardOverlay className="overlay">
-					<LikedButton onClick={toggleLike} className={liked ? "liked" : ""}>
+				<ImageOverlay className="overlay">
+					<LikeButton onClick={toggleLike} className={liked ? "liked" : ""}>
 						<StyledHeartIcon></StyledHeartIcon>
-					</LikedButton>
+					</LikeButton>
 					{!inCart ? (
-						<>
-							<StyledButton onClick={addToCart}>Add to Cart</StyledButton>
-						</>
+						<CartButton className="reverse" onClick={addToCart}>
+							Add to Cart
+						</CartButton>
 					) : (
-						<>
-							<RentedWrapper className="rented">
-								<p>In Cart</p>
-							</RentedWrapper>
-						</>
+						<CartButton>View in Cart</CartButton>
 					)}
-				</CardOverlay>
+				</ImageOverlay>
 				<StyledImg src={poster}></StyledImg>
 			</StyledImgWrapper>
 			<MovieDetails>

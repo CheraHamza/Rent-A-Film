@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Header from "../components/Header";
+import Button from "../components/Button";
 import Searchbar from "../components/Searchbar";
 import { FilterIcon } from "lucide-react";
 import MovieCard from "../components/MovieCard";
@@ -8,9 +9,16 @@ import { format } from "date-fns";
 
 const StyledCatalogPage = styled.div``;
 
-const MainSection = styled.section``;
+const MainSection = styled.section`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	padding-block: 20px;
+`;
 
 const FilterBar = styled.section`
+	width: 100%;
 	display: flex;
 	justify-content: end;
 	gap: 20px;
@@ -18,29 +26,19 @@ const FilterBar = styled.section`
 	padding: 10px 30px;
 `;
 
-const StyledButton = styled.button`
+const FilterButton = styled(Button)`
 	height: 30px;
 
 	display: flex;
 	align-items: center;
 	gap: 5px;
 
-	color: white;
-	background-color: transparent;
 	border: none;
 
+	font-family: "Playfair Display";
 	font-size: 16px;
 	letter-spacing: 1px;
 	padding: 5px 10px;
-
-	cursor: pointer;
-
-	transition: all 0.15s ease-in-out;
-
-	&:hover {
-		background-color: white;
-		color: black;
-	}
 `;
 
 const StyledIcon = styled(FilterIcon)`
@@ -57,6 +55,11 @@ const PostersWrapper = styled.section`
 	padding: 20px 30px;
 `;
 
+const LoadMoreButton = styled(Button)`
+	width: 400px;
+	height: 45px;
+`;
+
 const CatalogPage = () => {
 	const { data } = useFetchData(
 		"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
@@ -67,10 +70,10 @@ const CatalogPage = () => {
 			<Header></Header>
 			<MainSection>
 				<FilterBar>
-					<StyledButton>
+					<FilterButton>
 						<StyledIcon></StyledIcon>
 						Filters
-					</StyledButton>
+					</FilterButton>
 					<Searchbar></Searchbar>
 				</FilterBar>
 				<PostersWrapper>
@@ -86,6 +89,7 @@ const CatalogPage = () => {
 							></MovieCard>
 						))}
 				</PostersWrapper>
+				{data && <LoadMoreButton>Load More</LoadMoreButton>}
 			</MainSection>
 		</StyledCatalogPage>
 	);
