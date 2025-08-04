@@ -1,10 +1,9 @@
 import { HeartIcon, StarIcon } from "lucide-react";
 import styled from "styled-components";
-import Counter from "./Counter";
 import { useState } from "react";
 
 const StyledMovieCard = styled.div`
-	width: 200px;
+	width: 250px;
 	border: 0.5px solid rgba(255, 255, 255, 0.3);
 	color: white;
 
@@ -15,7 +14,6 @@ const StyledImgWrapper = styled.div`
 	position: relative;
 
 	width: 100%;
-	height: 300px;
 
 	&:hover .overlay {
 		opacity: 1;
@@ -90,19 +88,6 @@ const CardOverlay = styled.div`
 	transition: opacity 0.3s ease-in-out;
 `;
 
-const RentingWrapper = styled.section`
-	display: flex;
-	align-items: center;
-	gap: 5px;
-
-	p {
-		font-family: "DM Serif Display";
-		font-size: 14px;
-		font-weight: 500;
-		letter-spacing: 1px;
-	}
-`;
-
 const RentedWrapper = styled.section`
 	display: flex;
 	justify-content: center;
@@ -119,11 +104,11 @@ const RentedWrapper = styled.section`
 const LikedButton = styled.button`
 	position: absolute;
 
-	top: 10px;
-	right: 10px;
+	top: 15px;
+	right: 15px;
 
-	width: 30px;
-	height: 30px;
+	width: 35px;
+	height: 35px;
 
 	color: white;
 	background-color: transparent;
@@ -165,31 +150,18 @@ const StyledButton = styled.button`
 		background-color: white;
 		color: black;
 	}
-
-	&.reverse {
-		background-color: white;
-		color: black;
-
-		&:hover {
-			background-color: transparent;
-			color: white;
-		}
-	}
 `;
 
 const MovieCard = ({ id, poster, title, date, rating }) => {
-	const [rented, setRented] = useState(false);
+	const [inCart, setInCart] = useState(false);
 	const [liked, setLiked] = useState(false);
-	const [days, setDays] = useState(1);
-
-	const price = (rating * days).toFixed(2);
 
 	const toggleLike = () => {
 		setLiked(!liked);
 	};
 
-	const rent = () => {
-		setRented(true);
+	const addToCart = () => {
+		setInCart(true);
 	};
 
 	return (
@@ -199,14 +171,9 @@ const MovieCard = ({ id, poster, title, date, rating }) => {
 					<LikedButton onClick={toggleLike} className={liked ? "liked" : ""}>
 						<StyledHeartIcon></StyledHeartIcon>
 					</LikedButton>
-					{!rented ? (
+					{!inCart ? (
 						<>
-							<RentingWrapper>
-								<p>Rent For</p>
-								<Counter count={days} setCount={setDays}></Counter>
-								<p>Days</p>
-							</RentingWrapper>
-							<StyledButton onClick={rent}>{`$${price}`}</StyledButton>
+							<StyledButton onClick={addToCart}>Add to Cart</StyledButton>
 						</>
 					) : (
 						<>
