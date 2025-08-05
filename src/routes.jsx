@@ -1,13 +1,8 @@
-import HomePage from "./pages/HomePage";
-import CatalogPage from "./pages/CatalogPage";
+import App from "./App";
 const routes = [
 	{
-		path: "/",
-		element: <HomePage />,
-	},
-	{
-		path: "/catalog",
-		element: <CatalogPage />,
+		path: "/:page",
+		element: <App />,
 	},
 ];
 
