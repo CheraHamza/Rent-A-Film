@@ -59,8 +59,8 @@ const LoadMoreButton = styled(Button)`
 	margin-block: 20px;
 `;
 
-const CatalogPage = () => {
-	const { data } = useFetchData(
+const CatalogPage = ({ data, setData }) => {
+	const { fetchedData } = useFetchData(
 		"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
 	);
 
@@ -75,8 +75,8 @@ const CatalogPage = () => {
 					<Searchbar></Searchbar>
 				</FilterBar>
 				<PostersWrapper>
-					{data &&
-						data.results.map((movieDetails) => (
+					{fetchedData &&
+						fetchedData.results.map((movieDetails) => (
 							<MovieCard
 								key={movieDetails.id}
 								id={movieDetails.id}
@@ -84,10 +84,12 @@ const CatalogPage = () => {
 								title={movieDetails.title}
 								date={format(movieDetails.release_date, "MMM dd, yyyy")}
 								rating={movieDetails.vote_average.toFixed(2)}
+								data={data}
+								setData={setData}
 							></MovieCard>
 						))}
 				</PostersWrapper>
-				{data && <LoadMoreButton>Load More</LoadMoreButton>}
+				{fetchedData && <LoadMoreButton>Load More</LoadMoreButton>}
 			</MainSection>
 		</StyledCatalogPage>
 	);

@@ -1,7 +1,6 @@
 import { HeartIcon, StarIcon } from "lucide-react";
 import Button from "../components/Button";
 import styled from "styled-components";
-import { useState } from "react";
 
 const StyledMovieCard = styled.div`
 	width: 250px;
@@ -122,27 +121,61 @@ const StyledHeartIcon = styled(HeartIcon)`
 	height: 100%;
 `;
 
-const MovieCard = ({ id, poster, title, date, rating }) => {
-	const [inCart, setInCart] = useState(false);
-	const [liked, setLiked] = useState(false);
-
-	const toggleLike = () => {
-		setLiked(!liked);
+const MovieCard = ({ id, poster, title, date, rating, data, setData }) => {
+	const isOnlist = (list) => {
+		return data[list].filter((item) => item.id === id)[0] ? true : false;
 	};
 
-	const addToCart = () => {
-		setInCart(true);
+	const handleAddToList = (list) => {
+		let newItem = {
+			id,
+			card_info: {
+				title,
+				date,
+				rating,
+				poster_url: poster,
+			},
+		};
+
+		setData((prevData) => ({
+			...prevData,
+			[list]: [...prevData[list], newItem],
+		}));
+	};
+
+	const handleRemoveFromList = (list) => {
+		setData((prevData) => ({
+			...prevData,
+			[list]: prevData[list].filter((item) => item.id !== id),
+		}));
+	};
+
+	const handleLikeClick = () => {
+		const list = "wishlist";
+		if (isOnlist(list)) {
+			handleRemoveFromList(list);
+		} else {
+			handleAddToList(list);
+		}
 	};
 
 	return (
 		<StyledMovieCard id={id}>
 			<StyledImgWrapper>
 				<ImageOverlay className="overlay">
-					<LikeButton onClick={toggleLike} className={liked ? "liked" : ""}>
+					<LikeButton
+						onClick={handleLikeClick}
+						className={isOnlist("wishlist") ? "liked" : ""}
+					>
 						<StyledHeartIcon></StyledHeartIcon>
 					</LikeButton>
-					{!inCart ? (
-						<CartButton className="reverse" onClick={addToCart}>
+					{!isOnlist("cart") ? (
+						<CartButton
+							className="reverse"
+							onClick={() => {
+								handleAddToList("cart");
+							}}
+						>
 							Add to Cart
 						</CartButton>
 					) : (

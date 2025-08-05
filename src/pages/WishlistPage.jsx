@@ -3,7 +3,6 @@ import Button from "../components/Button";
 import { SortAsc, SortDesc } from "lucide-react";
 import Searchbar from "../components/Searchbar";
 import { useState } from "react";
-import { getWishlist } from "../utils/data.js";
 import MovieCard from "../components/MovieCard.jsx";
 
 const StyledWishList = styled.div``;
@@ -45,27 +44,32 @@ const MainSection = styled.section`
 	padding: 20px 30px;
 `;
 
-const WishlistPage = () => {
-	const [order, setOrder] = useState("Ascending");
+const WishlistPage = ({ data, setData }) => {
+	const [order, setOrder] = useState("Newest");
 
-	const sortToggle = () => {
-		order === "Ascending" ? setOrder("Descending") : setOrder("Ascending");
-	};
-
-	let wishlist = getWishlist();
+	let wishlist =
+		order === "Newest" ? [...data.wishlist].reverse() : data.wishlist;
 
 	return (
 		<StyledWishList>
 			<SortBar>
-				{order === "Ascending" ? (
-					<SortButton onClick={sortToggle}>
+				{order === "Newest" ? (
+					<SortButton
+						onClick={() => {
+							setOrder("Oldest");
+						}}
+					>
 						<SortAsc></SortAsc>
-						Ascending
+						Newest
 					</SortButton>
 				) : (
-					<SortButton onClick={sortToggle}>
+					<SortButton
+						onClick={() => {
+							setOrder("Newest");
+						}}
+					>
 						<SortDesc></SortDesc>
-						Descending
+						Oldest
 					</SortButton>
 				)}
 
@@ -80,6 +84,8 @@ const WishlistPage = () => {
 						date={item.card_info.date}
 						rating={item.card_info.rating}
 						poster={item.card_info.poster_url}
+						data={data}
+						setData={setData}
 					></MovieCard>
 				))}
 			</MainSection>

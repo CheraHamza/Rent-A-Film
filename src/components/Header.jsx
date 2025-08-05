@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import logo from "/Icons/logo.svg";
 import Navbar from "./Navbar";
 import CartIcon from "./CartIcon";
@@ -22,12 +21,14 @@ const StyledLogo = styled.img`
 	height: 40px;
 `;
 
-const Header = ({ onTop = false }) => {
+const Header = ({ data, onTop = false }) => {
+	const cartCount = data.cart.length;
+
 	return (
 		<StyledHeader className={onTop ? "onTop" : ""}>
 			<StyledLogo src={logo} alt="logo"></StyledLogo>
 			<Navbar></Navbar>
-			<CartIcon></CartIcon>
+			<CartIcon count={cartCount}></CartIcon>
 		</StyledHeader>
 	);
 };
