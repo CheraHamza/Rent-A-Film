@@ -41,8 +41,6 @@ const StyledButton = styled.button`
 `;
 
 const StyledCount = styled.p`
-	font-family: "DM Serif Display";
-
 	font-size: 18px;
 `;
 

@@ -37,27 +37,22 @@ const MovieDetails = styled.div`
 
 	h1 {
 		font-size: 17px;
-		font-weight: 600;
-
 		cursor: pointer;
 	}
 
 	h2 {
-		font-size: 15px;
-		font-weight: 400;
-
+		font-size: 14px;
 		color: rgba(255, 255, 255, 0.8);
 	}
 `;
 
 const Rating = styled.div`
 	display: flex;
-	align-items: end;
+	align-items: center;
 	gap: 5px;
 
 	p {
-		font-family: "DM Serif Display";
-		font-size: 16px;
+		font-size: 14px;
 		color: #ffffffb8;
 	}
 `;

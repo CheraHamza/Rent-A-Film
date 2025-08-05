@@ -27,7 +27,6 @@ const Counter = styled.span`
 	width: 19px;
 	height: 19px;
 
-	font-family: "DM Serif Display";
 	font-size: 12px;
 
 	display: flex;

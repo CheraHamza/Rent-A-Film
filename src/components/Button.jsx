@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const Button = styled.button`
-	font-family: "DM Serif Display";
 	font-size: 18px;
 	color: white;
 
