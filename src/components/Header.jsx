@@ -9,6 +9,12 @@ const StyledHeader = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	padding: 5px 30px;
+
+	&.onTop {
+		position: absolute;
+		width: 100%;
+		z-index: 99;
+	}
 `;
 
 const StyledLogo = styled.img`
@@ -16,9 +22,9 @@ const StyledLogo = styled.img`
 	height: 40px;
 `;
 
-const Header = () => {
+const Header = ({ onTop = false }) => {
 	return (
-		<StyledHeader className="header">
+		<StyledHeader className={onTop ? "onTop" : ""}>
 			<StyledLogo src={logo} alt="logo"></StyledLogo>
 			<Navbar></Navbar>
 			<CartIcon></CartIcon>
