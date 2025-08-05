@@ -1,4 +1,3 @@
-import Header from "../components/Header";
 import styled from "styled-components";
 import Button from "../components/Button";
 
@@ -80,7 +79,6 @@ const BrowseButton = styled(Button)`
 function HomePage() {
 	return (
 		<StyledHomePage>
-			<Header></Header>
 			<FrameWrapper>
 				<Frame $backgroundImg={bg_1}>
 					<section>

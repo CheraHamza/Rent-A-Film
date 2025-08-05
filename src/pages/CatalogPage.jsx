@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../components/Header";
 import Button from "../components/Button";
 import Searchbar from "../components/Searchbar";
 import { FilterIcon } from "lucide-react";
@@ -13,8 +12,6 @@ const MainSection = styled.section`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-
-	padding-block: 20px;
 `;
 
 const FilterBar = styled.section`
@@ -58,6 +55,8 @@ const PostersWrapper = styled.section`
 const LoadMoreButton = styled(Button)`
 	width: 400px;
 	height: 45px;
+
+	margin-block: 20px;
 `;
 
 const CatalogPage = () => {
@@ -67,7 +66,6 @@ const CatalogPage = () => {
 
 	return (
 		<StyledCatalogPage>
-			<Header></Header>
 			<MainSection>
 				<FilterBar>
 					<FilterButton>
