@@ -6,18 +6,13 @@ import bg_2 from "/Images/image_2.jpg";
 import bg_3 from "/Images/image_3.jpg";
 import bg_4 from "/Images/image_4.jpg";
 import bg_5 from "/Images/image_5.jpg";
+import { useNavigate } from "react-router-dom";
 
 const StyledHomePage = styled.div`
 	width: 100%;
 	height: 100%;
 
 	position: relative;
-
-	.header {
-		position: absolute;
-		width: 100%;
-		z-index: 99;
-	}
 `;
 
 const FrameWrapper = styled.div`
@@ -77,6 +72,8 @@ const BrowseButton = styled(Button)`
 `;
 
 function HomePage() {
+	const navigate = useNavigate();
+
 	return (
 		<StyledHomePage>
 			<FrameWrapper>
@@ -113,7 +110,13 @@ function HomePage() {
 						<StyledH1>Find Your Next Frame.</StyledH1>
 						<StyledH1>Rent. Watch. Drift.</StyledH1>
 					</section>
-					<BrowseButton>Browse Catalog</BrowseButton>
+					<BrowseButton
+						onClick={() => {
+							navigate("/catalog");
+						}}
+					>
+						Browse Catalog
+					</BrowseButton>
 				</Frame>
 			</FrameWrapper>
 		</StyledHomePage>
