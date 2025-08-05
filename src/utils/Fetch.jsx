@@ -43,7 +43,7 @@ const useFetchData = (url) => {
 		};
 	}, [url]);
 
-	return { data, error, loading };
+	return { fetchedData: data, error, loading };
 };
 
 export { useFetchData };
