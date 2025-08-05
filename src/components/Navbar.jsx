@@ -16,7 +16,7 @@ const Navbar = () => {
 			<Button
 				className="borderless"
 				onClick={() => {
-					navigate("/");
+					navigate("/home");
 				}}
 			>
 				Home
