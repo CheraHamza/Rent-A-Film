@@ -5,13 +5,14 @@ import { FilterIcon } from "lucide-react";
 import MovieCard from "../components/MovieCard";
 import { useFetchData } from "../utils/Fetch";
 import { format } from "date-fns";
+import Loader from "../components/Loader";
 
-const StyledCatalogPage = styled.div``;
-
-const MainSection = styled.section`
+const StyledCatalogPage = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	flex-grow: 1;
 `;
 
 const FilterBar = styled.section`
@@ -60,38 +61,42 @@ const LoadMoreButton = styled(Button)`
 `;
 
 const CatalogPage = ({ data, setData, setMovieDetailView }) => {
-	const { fetchedData } = useFetchData(
+	const { fetchedData, loading } = useFetchData(
 		"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
 	);
 
 	return (
 		<StyledCatalogPage>
-			<MainSection>
-				<FilterBar>
-					<FilterButton>
-						<StyledIcon></StyledIcon>
-						Filters
-					</FilterButton>
-					<Searchbar></Searchbar>
-				</FilterBar>
-				<PostersWrapper>
-					{fetchedData &&
-						fetchedData.results.map((movieDetails) => (
-							<MovieCard
-								key={movieDetails.id}
-								id={movieDetails.id}
-								poster={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
-								title={movieDetails.title}
-								date={format(movieDetails.release_date, "MMM dd, yyyy")}
-								rating={movieDetails.vote_average.toFixed(1)}
-								data={data}
-								setData={setData}
-								setMovieDetailView={setMovieDetailView}
-							></MovieCard>
-						))}
-				</PostersWrapper>
-				{fetchedData && <LoadMoreButton>Load More</LoadMoreButton>}
-			</MainSection>
+			<FilterBar>
+				<FilterButton>
+					<StyledIcon></StyledIcon>
+					Filters
+				</FilterButton>
+				<Searchbar></Searchbar>
+			</FilterBar>
+			{loading ? (
+				<Loader></Loader>
+			) : (
+				<>
+					<PostersWrapper>
+						{fetchedData &&
+							fetchedData.results.map((movieDetails) => (
+								<MovieCard
+									key={movieDetails.id}
+									id={movieDetails.id}
+									poster={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+									title={movieDetails.title}
+									date={format(movieDetails.release_date, "MMM dd, yyyy")}
+									rating={movieDetails.vote_average.toFixed(1)}
+									data={data}
+									setData={setData}
+									setMovieDetailView={setMovieDetailView}
+								></MovieCard>
+							))}
+					</PostersWrapper>
+					{fetchedData && <LoadMoreButton>Load More</LoadMoreButton>}
+				</>
+			)}
 		</StyledCatalogPage>
 	);
 };
