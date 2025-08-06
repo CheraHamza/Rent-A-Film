@@ -1,6 +1,7 @@
 import { HeartIcon, StarIcon } from "lucide-react";
 import Button from "../components/Button";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const StyledMovieCard = styled.div`
 	width: 250px;
@@ -35,15 +36,16 @@ const MovieDetails = styled.div`
 
 	padding: 10px 10px 25px;
 
-	h1 {
-		font-size: 17px;
-		cursor: pointer;
-	}
-
 	h2 {
 		font-size: 14px;
 		color: rgba(255, 255, 255, 0.8);
 	}
+`;
+
+const TitleButton = styled(Button)`
+	width: fit-content;
+
+	text-align: start;
 `;
 
 const Rating = styled.div`
@@ -116,7 +118,18 @@ const StyledHeartIcon = styled(HeartIcon)`
 	height: 100%;
 `;
 
-const MovieCard = ({ id, poster, title, date, rating, data, setData }) => {
+const MovieCard = ({
+	id,
+	poster,
+	title,
+	date,
+	rating,
+	data,
+	setData,
+	setMovieDetailView,
+}) => {
+	const navigate = useNavigate();
+
 	const isOnlist = (list) => {
 		return data[list].filter((item) => item.id === id)[0] ? true : false;
 	};
@@ -154,6 +167,16 @@ const MovieCard = ({ id, poster, title, date, rating, data, setData }) => {
 		}
 	};
 
+	const handleMovieClick = () => {
+		const urlTitle = title.split(" ").join("-").toLowerCase();
+
+		setMovieDetailView({
+			id,
+			title: urlTitle,
+		});
+		navigate(`/movie/${id}/${urlTitle}`);
+	};
+
 	return (
 		<StyledMovieCard id={id}>
 			<StyledImgWrapper>
@@ -184,7 +207,13 @@ const MovieCard = ({ id, poster, title, date, rating, data, setData }) => {
 					<StyledStar></StyledStar>
 					<p>{rating}</p>
 				</Rating>
-				<h1 title={title}>{title}</h1>
+				<TitleButton
+					onClick={handleMovieClick}
+					className="borderless"
+					title={title}
+				>
+					{title}
+				</TitleButton>
 				<h2>{date}</h2>
 			</MovieDetails>
 		</StyledMovieCard>
