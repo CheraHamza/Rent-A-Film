@@ -6,6 +6,7 @@ import MovieCard from "../components/MovieCard";
 import { useFetchData } from "../utils/Fetch";
 import { format } from "date-fns";
 import Loader from "../components/Loader";
+import { useEffect, useState } from "react";
 
 const StyledCatalogPage = styled.div`
 	display: flex;
@@ -61,9 +62,18 @@ const LoadMoreButton = styled(Button)`
 `;
 
 const CatalogPage = ({ data, setData, setMovieDetailView }) => {
+	const [movies, setMovies] = useState([]);
+	const [page, setPage] = useState(1);
+
 	const { fetchedData, loading } = useFetchData(
-		"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
+		`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}`
 	);
+
+	useEffect(() => {
+		if (fetchedData) {
+			setMovies((prevMovies) => [...prevMovies, ...fetchedData.results]);
+		}
+	}, [fetchedData]);
 
 	return (
 		<StyledCatalogPage>
@@ -79,8 +89,8 @@ const CatalogPage = ({ data, setData, setMovieDetailView }) => {
 			) : (
 				<>
 					<PostersWrapper>
-						{fetchedData &&
-							fetchedData.results.map((movieDetails) => (
+						{movies.length > 0 &&
+							movies.map((movieDetails) => (
 								<MovieCard
 									key={movieDetails.id}
 									id={movieDetails.id}
@@ -94,7 +104,15 @@ const CatalogPage = ({ data, setData, setMovieDetailView }) => {
 								></MovieCard>
 							))}
 					</PostersWrapper>
-					{fetchedData && <LoadMoreButton>Load More</LoadMoreButton>}
+					{movies.length > 0 && (
+						<LoadMoreButton
+							onClick={() => {
+								setPage(page + 1);
+							}}
+						>
+							Load More
+						</LoadMoreButton>
+					)}
 				</>
 			)}
 		</StyledCatalogPage>
