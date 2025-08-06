@@ -48,9 +48,9 @@ const Loader = () => {
 	return (
 		<StyledLoader>
 			<div className="pulsesWrapper">
-				<div class="pulse-dot"></div>
-				<div class="pulse-dot"></div>
-				<div class="pulse-dot"></div>
+				<div className="pulse-dot"></div>
+				<div className="pulse-dot"></div>
+				<div className="pulse-dot"></div>
 			</div>
 			<h1>Loading</h1>
 		</StyledLoader>
