@@ -4,30 +4,67 @@ import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import CatalogPage from "./pages/CatalogPage";
 import WishlistPage from "./pages/WishlistPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { data as initialData } from "./utils/data.js";
+import MoviePage from "./pages/MoviePage.jsx";
 
 const StyledApp = styled.div``;
 
 const App = () => {
 	const [data, setData] = useState(initialData);
+	const [movieDetailView, setMovieDetailView] = useState({
+		id: null,
+		title: null,
+	});
 
 	let params = useParams();
+	let url = params["*"];
 
-	let page = params.page;
+	useEffect(() => {
+		const urlElement = url.split("/");
+		if (urlElement[0] === "movie") {
+			let id = Number(urlElement[1]);
+			let title = urlElement[2];
+
+			if (Number.isInteger(id) && title) {
+				setMovieDetailView({
+					id,
+					title,
+				});
+			}
+		}
+	}, [url]);
 
 	const pageContent =
-		page === "home" ? (
+		url === "home" ? (
 			<HomePage />
-		) : page === "catalog" ? (
-			<CatalogPage data={data} setData={setData} />
-		) : page === "wishlist" ? (
-			<WishlistPage data={data} setData={setData} />
+		) : url === "catalog" ? (
+			<CatalogPage
+				data={data}
+				setData={setData}
+				movieDetailView={movieDetailView}
+				setMovieDetailView={setMovieDetailView}
+			/>
+		) : url === "wishlist" ? (
+			<WishlistPage
+				data={data}
+				setData={setData}
+				movieDetailView={movieDetailView}
+				setMovieDetailView={setMovieDetailView}
+			/>
+		) : url === `movie/${movieDetailView.id}/${movieDetailView.title}` ? (
+			<MoviePage
+				data={data}
+				setData={setData}
+				id={movieDetailView.id}
+				movieDetailView={movieDetailView}
+				setMovieDetailView={setMovieDetailView}
+			/>
 		) : null;
 
 	return (
 		<StyledApp>
-			<Header onTop={page === "home"} data={data}></Header>
+			<Header onTop={url === "home"} data={data}></Header>
 			{pageContent}
 		</StyledApp>
 	);

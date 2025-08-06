@@ -1,7 +1,7 @@
 import App from "./App";
 const routes = [
 	{
-		path: "/:page",
+		path: "/*",
 		element: <App />,
 	},
 ];
