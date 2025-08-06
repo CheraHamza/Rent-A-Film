@@ -1,8 +1,11 @@
+import { format } from "date-fns";
+
 const createMovie = (movieDetails) => {
 	const id = movieDetails.id;
 	const poster = `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`;
 	const title = movieDetails.title;
 	const year = movieDetails.release_date.split("-", 1);
+	const date = format(movieDetails.release_date, "MMM dd, yyyy");
 	const genres = movieDetails.genres.map((genre) => {
 		return genre.name;
 	});
@@ -14,7 +17,7 @@ const createMovie = (movieDetails) => {
 		return `${hours}h ${minutes}m`;
 	})();
 
-	const rating = movieDetails.vote_average;
+	const rating = movieDetails.vote_average.toFixed(1);
 	const tagline = movieDetails.tagline;
 	const overview = movieDetails.overview;
 
@@ -46,9 +49,18 @@ const createMovie = (movieDetails) => {
 	})();
 
 	const recommendations = (() => {
-		let ids = movieDetails.recommendations.results.filter((movie) => movie.id);
+		let movies = movieDetails.recommendations.results.filter(
+			(movie) => movie.id
+		);
 
-		return ids;
+		return movies.map((movie) => {
+			return {
+				id: movie.id,
+				title: movie.title,
+				poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+				year: movie.release_date.split("-", 1),
+			};
+		});
 	})();
 
 	const price = `$${movieDetails.vote_average.toFixed(2)}`;
@@ -58,6 +70,7 @@ const createMovie = (movieDetails) => {
 		poster,
 		title,
 		year,
+		date,
 		genres,
 		runtime,
 		rating,
