@@ -44,7 +44,7 @@ const MainSection = styled.section`
 	padding: 20px 30px;
 `;
 
-const WishlistPage = ({ data, setData }) => {
+const WishlistPage = ({ data, setData, setMovieDetailView }) => {
 	const [order, setOrder] = useState("Newest");
 
 	let wishlist =
@@ -86,6 +86,7 @@ const WishlistPage = ({ data, setData }) => {
 						poster={item.card_info.poster_url}
 						data={data}
 						setData={setData}
+						setMovieDetailView={setMovieDetailView}
 					></MovieCard>
 				))}
 			</MainSection>

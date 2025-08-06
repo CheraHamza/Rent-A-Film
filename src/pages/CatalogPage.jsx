@@ -59,7 +59,7 @@ const LoadMoreButton = styled(Button)`
 	margin-block: 20px;
 `;
 
-const CatalogPage = ({ data, setData }) => {
+const CatalogPage = ({ data, setData, setMovieDetailView }) => {
 	const { fetchedData } = useFetchData(
 		"https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
 	);
@@ -83,9 +83,10 @@ const CatalogPage = ({ data, setData }) => {
 								poster={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
 								title={movieDetails.title}
 								date={format(movieDetails.release_date, "MMM dd, yyyy")}
-								rating={movieDetails.vote_average.toFixed(2)}
+								rating={movieDetails.vote_average.toFixed(1)}
 								data={data}
 								setData={setData}
+								setMovieDetailView={setMovieDetailView}
 							></MovieCard>
 						))}
 				</PostersWrapper>
