@@ -6,6 +6,8 @@ const StyledLoader = styled.div`
 	align-items: center;
 	gap: 20px;
 
+	margin: auto;
+
 	h1 {
 		color: rgb(255, 255, 255, 0.8);
 	}
