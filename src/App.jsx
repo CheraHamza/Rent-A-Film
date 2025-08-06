@@ -8,7 +8,11 @@ import { useEffect, useState } from "react";
 import { data as initialData } from "./utils/data.js";
 import MoviePage from "./pages/MoviePage.jsx";
 
-const StyledApp = styled.div``;
+const StyledApp = styled.div`
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+`;
 
 const App = () => {
 	const [data, setData] = useState(initialData);
