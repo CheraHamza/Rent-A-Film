@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import CartItem from "../components/CartItem";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 const StyledCartPage = styled.div`
 	height: calc(100vh - 70px);
@@ -74,9 +75,27 @@ const CheckoutButton = styled(Button)`
 	margin-top: 20px;
 
 	font-size: 20px;
+	letter-spacing: 2px;
+
+	&.disabled {
+		opacity: 0.3;
+		pointer-events: none;
+	}
 `;
 
 const CartPage = ({ data, setData }) => {
+	const navigate = useNavigate();
+
+	const handleCheckout = () => {
+		setData((prevData) => ({
+			...prevData,
+			cart: [],
+		}));
+
+		alert("Thank you for your trust!");
+		navigate("/catalog");
+	};
+
 	const totalPrice = () => {
 		let price = 0;
 		data.cart.forEach((item) => {
@@ -94,11 +113,14 @@ const CartPage = ({ data, setData }) => {
 				{data.cart.map((item) => (
 					<CartItem
 						key={item.id}
+						id={item.id}
 						poster={item.poster_url}
 						title={item.title}
 						year={item.year}
 						days={item.days}
 						price={item.price}
+						data={data}
+						setData={setData}
 					></CartItem>
 				))}
 			</CartItemWrapper>
@@ -106,7 +128,7 @@ const CartPage = ({ data, setData }) => {
 				<h1>Summary</h1>
 				<div className="priceRow">
 					<p>Price</p>
-					<p>{`$${totalPrice()}`}</p>
+					<p>{`$${totalPrice().toFixed(2)}`}</p>
 				</div>
 				<div className="saleRow">
 					<p>Sale Discount</p>
@@ -119,9 +141,14 @@ const CartPage = ({ data, setData }) => {
 				<hr />
 				<div className="totalRow">
 					<p>Subtotal</p>
-					<p>{`$${totalPrice() - discount}`}</p>
+					<p>{`$${(totalPrice() - discount).toFixed(2)}`}</p>
 				</div>
-				<CheckoutButton className="reverse">Checkout</CheckoutButton>
+				<CheckoutButton
+					onClick={handleCheckout}
+					className={data.cart.length > 0 ? "reverse" : "reverse disabled"}
+				>
+					Checkout
+				</CheckoutButton>
 			</CheckoutWrapper>
 		</StyledCartPage>
 	);
