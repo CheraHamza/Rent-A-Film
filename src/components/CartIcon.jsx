@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import shoppingcart from "/Icons/shopping-cart.svg";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 const StyledCart = styled(Button)`
 	width: 60px;
@@ -43,8 +44,15 @@ const Counter = styled.span`
 `;
 
 const CartIcon = ({ count = 2 }) => {
+	const navigate = useNavigate();
+
 	return (
-		<StyledCart className="borderless">
+		<StyledCart
+			onClick={() => {
+				navigate("/cart");
+			}}
+			className="borderless"
+		>
 			<StyledImg src={shoppingcart} alt="shopping cart"></StyledImg>
 			<Counter>{count}</Counter>
 		</StyledCart>

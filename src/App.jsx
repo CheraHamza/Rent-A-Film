@@ -7,6 +7,7 @@ import WishlistPage from "./pages/WishlistPage";
 import { useEffect, useState } from "react";
 import { data as initialData } from "./utils/data.js";
 import MoviePage from "./pages/MoviePage.jsx";
+import CartPage from "./pages/CartPage.jsx";
 
 const StyledApp = styled.div`
 	min-height: 100vh;
@@ -64,6 +65,8 @@ const App = () => {
 				movieDetailView={movieDetailView}
 				setMovieDetailView={setMovieDetailView}
 			/>
+		) : url === "cart" ? (
+			<CartPage data={data} setData={setData} />
 		) : null;
 
 	return (
