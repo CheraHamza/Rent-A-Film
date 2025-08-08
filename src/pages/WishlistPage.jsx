@@ -80,10 +80,10 @@ const WishlistPage = ({ data, setData, setMovieDetailView }) => {
 					<MovieCard
 						id={item.id}
 						key={item.id}
-						title={item.card_info.title}
-						date={item.card_info.date}
-						rating={item.card_info.rating}
-						poster={item.card_info.poster_url}
+						title={item.title}
+						date={item.date}
+						rating={item.rating}
+						poster={item.poster_url}
 						data={data}
 						setData={setData}
 						setMovieDetailView={setMovieDetailView}

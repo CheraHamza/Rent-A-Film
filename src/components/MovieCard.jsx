@@ -134,20 +134,34 @@ const MovieCard = ({
 		return data[list].filter((item) => item.id === id)[0] ? true : false;
 	};
 
-	const handleAddToList = (list) => {
+	const handleAddToCart = () => {
 		let newItem = {
 			id,
-			card_info: {
-				title,
-				date,
-				rating,
-				poster_url: poster,
-			},
+			title,
+			year: date.split(", ")[1],
+			price: rating,
+			poster_url: poster,
+			days: 1,
 		};
 
 		setData((prevData) => ({
 			...prevData,
-			[list]: [...prevData[list], newItem],
+			cart: [...prevData.cart, newItem],
+		}));
+	};
+
+	const handleAddToWishlist = () => {
+		let newItem = {
+			id,
+			title,
+			date,
+			rating,
+			poster_url: poster,
+		};
+
+		setData((prevData) => ({
+			...prevData,
+			wishlist: [...prevData.wishlist, newItem],
 		}));
 	};
 
@@ -163,7 +177,7 @@ const MovieCard = ({
 		if (isOnlist(list)) {
 			handleRemoveFromList(list);
 		} else {
-			handleAddToList(list);
+			handleAddToWishlist();
 		}
 	};
 
@@ -191,7 +205,7 @@ const MovieCard = ({
 						<CartButton
 							className="reverse"
 							onClick={() => {
-								handleAddToList("cart");
+								handleAddToCart();
 							}}
 						>
 							Add to Cart
