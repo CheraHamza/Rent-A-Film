@@ -12,7 +12,7 @@ const StyledButton = styled.button`
 	height: 25px;
 	background-color: transparent;
 	border: none;
-	color: white;
+	color: black;
 
 	cursor: pointer;
 
