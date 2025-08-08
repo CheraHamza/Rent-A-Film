@@ -24,6 +24,10 @@ const StyledCartItem = styled.div`
 	&:hover {
 		transform: scale(1.01);
 	}
+
+	.priceWrapper {
+		width: 50px;
+	}
 `;
 
 const MovieWrapper = styled.div`
@@ -92,10 +96,39 @@ const RemoveItemButton = styled(Button)`
 	}
 `;
 
-const CartItem = ({ poster, title, year, days, price }) => {
+const CartItem = ({ id, poster, title, year, days, price, setData }) => {
+	const handleIncrement = () => {
+		if (days < 10) {
+			setData((prevData) => ({
+				...prevData,
+				cart: prevData.cart.map((item) =>
+					item.id === id ? { ...item, days: item.days + 1 } : item
+				),
+			}));
+		}
+	};
+
+	const handleDecrement = () => {
+		if (days > 1) {
+			setData((prevData) => ({
+				...prevData,
+				cart: prevData.cart.map((item) =>
+					item.id === id ? { ...item, days: item.days - 1 } : item
+				),
+			}));
+		}
+	};
+
+	const handleRemoveFromCart = () => {
+		setData((prevData) => ({
+			...prevData,
+			cart: prevData.cart.filter((item) => item.id !== id),
+		}));
+	};
+
 	return (
 		<StyledCartItem>
-			<RemoveItemButton>
+			<RemoveItemButton onClick={handleRemoveFromCart}>
 				<X></X>
 			</RemoveItemButton>
 			<MovieWrapper>
@@ -109,11 +142,15 @@ const CartItem = ({ poster, title, year, days, price }) => {
 			</MovieWrapper>
 			<DaysCounterWrapper>
 				<p>Rent For</p>
-				<Counter count={days}></Counter>
+				<Counter
+					count={days}
+					increment={handleIncrement}
+					decrement={handleDecrement}
+				></Counter>
 				<p>Days</p>
 			</DaysCounterWrapper>
-			<div>
-				<p>{`$${price * days}`}</p>
+			<div className="priceWrapper">
+				<p>{`$${(price * days).toFixed(2)}`}</p>
 			</div>
 		</StyledCartItem>
 	);
