@@ -44,19 +44,7 @@ const StyledCount = styled.p`
 	font-size: 18px;
 `;
 
-const Counter = ({ count, setCount }) => {
-	const increment = () => {
-		if (count < 10) {
-			setCount(count + 1);
-		}
-	};
-
-	const decrement = () => {
-		if (count > 1) {
-			setCount(count - 1);
-		}
-	};
-
+const Counter = ({ count, increment, decrement }) => {
 	return (
 		<StyledCounter>
 			<StyledButton
