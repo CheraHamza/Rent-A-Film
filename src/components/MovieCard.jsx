@@ -211,7 +211,13 @@ const MovieCard = ({
 							Add to Cart
 						</CartButton>
 					) : (
-						<CartButton>View in Cart</CartButton>
+						<CartButton
+							onClick={() => {
+								navigate("/cart");
+							}}
+						>
+							View in Cart
+						</CartButton>
 					)}
 				</ImageOverlay>
 				<StyledImg src={poster}></StyledImg>
