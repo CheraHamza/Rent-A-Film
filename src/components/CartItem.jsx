@@ -19,12 +19,6 @@ const StyledCartItem = styled.div`
 	background-color: white;
 	color: black;
 
-	transition: transform 0.15s ease-in-out;
-
-	&:hover {
-		transform: scale(1.01);
-	}
-
 	.priceWrapper {
 		width: 50px;
 	}
