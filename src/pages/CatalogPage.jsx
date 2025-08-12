@@ -7,6 +7,7 @@ import { useFetchData } from "../utils/Fetch";
 import { format } from "date-fns";
 import Loader from "../components/Loader";
 import { useEffect, useState } from "react";
+import FilterPopup from "../components/FilterPopup";
 
 const StyledCatalogPage = styled.div`
 	display: flex;
@@ -14,30 +15,6 @@ const StyledCatalogPage = styled.div`
 	align-items: center;
 
 	flex-grow: 1;
-`;
-
-const FilterBar = styled.section`
-	width: 100%;
-	display: flex;
-	justify-content: end;
-	gap: 20px;
-
-	padding: 10px 30px;
-`;
-
-const FilterButton = styled(Button)`
-	height: 30px;
-
-	display: flex;
-	align-items: center;
-	gap: 5px;
-
-	border: none;
-
-	font-family: "Playfair Display";
-	font-size: 16px;
-	letter-spacing: 1px;
-	padding: 5px 10px;
 `;
 
 const StyledIcon = styled(FilterIcon)`
@@ -77,13 +54,7 @@ const CatalogPage = ({ data, setData, setMovieDetailView }) => {
 
 	return (
 		<StyledCatalogPage>
-			<FilterBar>
-				<FilterButton>
-					<StyledIcon></StyledIcon>
-					Filters
-				</FilterButton>
-				<Searchbar></Searchbar>
-			</FilterBar>
+			<FilterBar></FilterBar>
 			{loading ? (
 				<Loader></Loader>
 			) : (
@@ -116,6 +87,75 @@ const CatalogPage = ({ data, setData, setMovieDetailView }) => {
 				</>
 			)}
 		</StyledCatalogPage>
+	);
+};
+
+const StyledFilterBar = styled.section`
+	width: 100%;
+	display: flex;
+	justify-content: end;
+	gap: 20px;
+
+	padding: 10px 30px;
+
+	.filtersWrapper {
+		position: relative;
+	}
+`;
+
+const FilterButton = styled(Button)`
+	height: 30px;
+
+	display: flex;
+	align-items: center;
+	gap: 5px;
+
+	border: none;
+
+	font-family: "Playfair Display";
+	font-size: 16px;
+	letter-spacing: 1px;
+	padding: 5px 10px;
+
+	&.active {
+		background-color: white;
+		color: black;
+	}
+`;
+
+const FilterBar = () => {
+	const [active, setActive] = useState(false);
+
+	const toggleActive = () => {
+		setActive(!active);
+	};
+
+	useEffect(() => {
+		const filtersWrapper = document.querySelector(".filtersWrapper");
+
+		document.addEventListener("click", (event) => {
+			if (!filtersWrapper.contains(event.target)) {
+				setActive(false);
+			}
+		});
+	});
+
+	return (
+		<StyledFilterBar>
+			<div className="filtersWrapper">
+				<FilterButton
+					onClick={toggleActive}
+					className={active ? "active" : ""}
+				>
+					<StyledIcon></StyledIcon>
+					Filters
+				</FilterButton>
+				{active && (
+					<FilterPopup genres={["Adventure", "Action", "Drama"]}></FilterPopup>
+				)}
+			</div>
+			<Searchbar></Searchbar>
+		</StyledFilterBar>
 	);
 };
 
