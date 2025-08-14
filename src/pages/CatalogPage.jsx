@@ -38,36 +38,73 @@ const LoadMoreButton = styled(Button)`
 	margin-block: 20px;
 `;
 
-const CatalogPage = ({ data, setData, setMovieDetailView }) => {
-	const [movies, setMovies] = useState([]);
-	const [page, setPage] = useState(1);
-
-	const { fetchedData, loading } = useFetchData(
-		`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}`
-	);
+const CatalogPage = ({
+	data,
+	setData,
+	catalog,
+	setCatalog,
+	pages,
+	setPages,
+	query,
+	filters,
+	setFilters,
+	setMovieDetailView,
+}) => {
+	const { fetchedData, loading } = useFetchData(query);
+	const [filteredCatalog, setFilteredCatalog] = useState(catalog);
 
 	useEffect(() => {
 		if (fetchedData) {
-			setMovies((prevMovies) => [...prevMovies, ...fetchedData.results]);
+			console.log(fetchedData);
+
+			setCatalog((prevMovies) => [...prevMovies, ...fetchedData.results]);
 		}
-	}, [fetchedData]);
+	}, [fetchedData, setCatalog]);
+
+	useEffect(() => {
+		let selectedGenres;
+		let matchesSelectedGenres = [];
+		if (filters.genres.length > 0) {
+			selectedGenres = filters.genres.map((genre) => genre.id);
+
+			catalog.forEach((item) => {
+				const movieGenres = item.genre_ids;
+				if (selectedGenres.every((genre) => movieGenres.includes(genre))) {
+					matchesSelectedGenres.push(item);
+					return;
+				}
+			});
+			console.log(matchesSelectedGenres);
+
+			setFilteredCatalog(matchesSelectedGenres);
+		} else {
+			setFilteredCatalog(catalog);
+		}
+	}, [filters.genres, catalog]);
 
 	return (
 		<StyledCatalogPage>
-			<FilterBar></FilterBar>
+			<FilterBar
+				filters={filters}
+				setFilters={setFilters}
+			></FilterBar>
 			{loading ? (
 				<Loader></Loader>
 			) : (
 				<>
 					<PostersWrapper>
-						{movies.length > 0 &&
-							movies.map((movieDetails) => (
+						{filteredCatalog.length > 0 &&
+							filteredCatalog.map((movieDetails) => (
 								<MovieCard
 									key={movieDetails.id}
 									id={movieDetails.id}
 									poster={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
 									title={movieDetails.title}
-									date={format(movieDetails.release_date, "MMM dd, yyyy")}
+									date={
+										movieDetails.release_date === ""
+											? "no date!"
+											: format(movieDetails.release_date, "MMM dd, yyyy")
+									}
 									rating={movieDetails.vote_average.toFixed(1)}
 									data={data}
 									setData={setData}
@@ -75,10 +112,10 @@ const CatalogPage = ({ data, setData, setMovieDetailView }) => {
 								></MovieCard>
 							))}
 					</PostersWrapper>
-					{movies.length > 0 && (
+					{filteredCatalog.length > 0 && (
 						<LoadMoreButton
 							onClick={() => {
-								setPage(page + 1);
+								setPages(pages + 1);
 							}}
 						>
 							Load More
@@ -123,7 +160,10 @@ const FilterButton = styled(Button)`
 	}
 `;
 
-const FilterBar = () => {
+const FilterBar = ({
+	filters,
+	setFilters,
+}) => {
 	const [active, setActive] = useState(false);
 
 	const toggleActive = () => {
@@ -143,18 +183,16 @@ const FilterBar = () => {
 	return (
 		<StyledFilterBar>
 			<div className="filtersWrapper">
-				<FilterButton
-					onClick={toggleActive}
-					className={active ? "active" : ""}
-				>
+				<FilterButton onClick={toggleActive} className={active ? "active" : ""}>
 					<StyledIcon></StyledIcon>
 					Filters
 				</FilterButton>
 				{active && (
-					<FilterPopup genres={["Adventure", "Action", "Drama"]}></FilterPopup>
+					<FilterPopup filters={filters} setFilters={setFilters}></FilterPopup>
 				)}
 			</div>
-			<Searchbar></Searchbar>
+			<Searchbar
+			></Searchbar>
 		</StyledFilterBar>
 	);
 };
