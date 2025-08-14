@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import App from "./App";
 import CartPage from "./pages/CartPage";
 import CatalogPage from "./pages/CatalogPage";
@@ -12,6 +13,10 @@ const routes = [
 		element: <App />,
 		errorElement: <ErrorPage />,
 		children: [
+			{
+				index: true,
+				element: <Navigate to="/home" replace />,
+			},
 			{
 				path: "home",
 				element: <HomePage />,
