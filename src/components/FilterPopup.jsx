@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useFetchData } from "../utils/Fetch";
 
 const StyledFilterPopup = styled.div`
 	width: min(500px, 60vw);
@@ -75,61 +76,91 @@ const ApplyButton = styled(Button)`
 	}
 `;
 
-const FilterPopup = ({
-	genres,
-	setGenres,
-	sortFilter,
-	setSortFilter,
-	orderFilter,
-	setOrderFilters,
-}) => {
+const FilterPopup = ({ filters, setFilters }) => {
+	const { fetchedData } = useFetchData(
+		`https://api.themoviedb.org/3/genre/movie/list?language=en`
+	);
+	const [availableGenres, setAvailableGenres] = useState([]);
 	const sortFilters = ["Alphabetical", "Rating", "Release Date"];
 	const orderFilters = ["Ascending", "Descending"];
+
+	useEffect(() => {
+		if (fetchedData) {
+			let selectedGenres = filters.genres.map((genre) => genre.id);
+			let availableGenres = fetchedData.genres.filter(
+				(genre) => !selectedGenres.includes(genre.id)
+			);
+			setAvailableGenres(availableGenres);
+		}
+	}, [fetchedData, filters.genres]);
+
+	const onSortFilterChange = (event) => {
+		setFilters((prevData) => ({
+			...prevData,
+			sort: event.target.value,
+		}));
+	};
+
+	const onOrderFilterChange = (event) => {
+		setFilters((prevData) => ({
+			...prevData,
+			order: event.target.value,
+		}));
+	};
 
 	return (
 		<StyledFilterPopup>
 			<Genres>
 				<h1>Genres</h1>
 				<div className="container">
-					{genres && (
+					{filters.genres && (
 						<>
-							{genres.map((genre) => (
-								<GenreItem key={genre} genre={genre}></GenreItem>
+							{filters.genres.map((genre) => (
+								<GenreItem
+									setFilters={setFilters}
+									key={genre.id}
+									genre={genre}
+								></GenreItem>
 							))}
 						</>
 					)}
 					<CustomDropDown
 						content={<Plus />}
-						options={["Anime", "Drama", "Horror"]}
+						options={availableGenres && availableGenres}
+						setFilters={setFilters}
 					></CustomDropDown>
 				</div>
 			</Genres>
 			<Sort>
 				<h1>Sort By</h1>
-				<StyledSelect>
-					{sortFilters && (
-						<>
-							{sortFilters.map((filter) => (
-								<option key={filter} value={filter}>
-									{filter}
-								</option>
-							))}
-						</>
-					)}
+				<StyledSelect onChange={onSortFilterChange}>
+					<>
+						{sortFilters.map((filter) => (
+							<option
+								selected={filter === filters.sort}
+								key={filter}
+								value={filter}
+							>
+								{filter}
+							</option>
+						))}
+					</>
 				</StyledSelect>
 			</Sort>
-			<Order>
+			<Order onChange={onOrderFilterChange}>
 				<h1>Order</h1>
 				<StyledSelect>
-					{orderFilters && (
-						<>
-							{orderFilters.map((filter) => (
-								<option key={filter} value={filter}>
-									{filter}
-								</option>
-							))}
-						</>
-					)}
+					<>
+						{orderFilters.map((filter) => (
+							<option
+								selected={filter === filters.order}
+								key={filter}
+								value={filter}
+							>
+								{filter}
+							</option>
+						))}
+					</>
 				</StyledSelect>
 			</Order>
 			<ApplyButton>Apply</ApplyButton>
@@ -169,11 +200,17 @@ const GenreButton = styled(Button)`
 	}
 `;
 
-const GenreItem = ({ genre }) => {
+const GenreItem = ({ genre, setFilters }) => {
+	const onRemove = () => {
+		setFilters((prevData) => ({
+			...prevData,
+			genres: prevData.genres.filter((item) => item.id !== genre.id),
+		}));
+	};
 	return (
 		<StyledGenreItem>
-			<GenreButton className="reverse">
-				<div className="genre">{genre}</div>
+			<GenreButton onClick={onRemove} className="reverse">
+				<div className="genre">{genre.name}</div>
 				<div className="removeGenre ">
 					<X></X>
 				</div>
@@ -184,7 +221,7 @@ const GenreItem = ({ genre }) => {
 
 const StyledCustomDropDown = styled.div`
 	position: relative;
-	width: 100px;
+	width: 130px;
 
 	display: flex;
 	flex-direction: column;
@@ -192,6 +229,12 @@ const StyledCustomDropDown = styled.div`
 
 	.optionContainer {
 		width: 100%;
+		height: 250px;
+
+		overflow-x: hidden;
+		overflow-y: auto;
+		scrollbar-width: thin;
+
 		position: absolute;
 		top: 100%;
 
@@ -219,11 +262,18 @@ const DropDownOption = styled(Button)`
 	padding: 5px;
 `;
 
-const CustomDropDown = ({ content, options, onSelect }) => {
+const CustomDropDown = ({ content, options, setFilters }) => {
 	const [active, setActive] = useState(false);
 
 	const toggleDropDown = () => {
 		setActive(!active);
+	};
+
+	const onSelect = (genre) => {
+		setFilters((prevData) => ({
+			...prevData,
+			genres: [...prevData.genres, genre],
+		}));
 	};
 
 	useEffect(() => {
@@ -247,8 +297,15 @@ const CustomDropDown = ({ content, options, onSelect }) => {
 			{active && (
 				<div className="optionContainer">
 					{options.map((option) => (
-						<DropDownOption key={option} className="reverse">
-							{option}
+						<DropDownOption
+							onClick={() => {
+								onSelect(option);
+							}}
+							id={option.id}
+							key={option.id}
+							className="reverse"
+						>
+							{option.name}
 						</DropDownOption>
 					))}
 				</div>
