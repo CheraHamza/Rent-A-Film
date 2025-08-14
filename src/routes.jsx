@@ -1,11 +1,38 @@
 import App from "./App";
+import CartPage from "./pages/CartPage";
+import CatalogPage from "./pages/CatalogPage";
 import ErrorPage from "./pages/ErrorPage";
+import HomePage from "./pages/HomePage";
+import MoviePage from "./pages/MoviePage";
+import WishlistPage from "./pages/WishlistPage";
+
 const routes = [
 	{
 		path: "/",
 		element: <App />,
-		errorElement: <ErrorPage/>,
-		
+		errorElement: <ErrorPage />,
+		children: [
+			{
+				path: "home",
+				element: <HomePage />,
+			},
+			{
+				path: "catalog",
+				element: <CatalogPage />,
+			},
+			{
+				path: "wishlist",
+				element: <WishlistPage />,
+			},
+			{
+				path: "cart",
+				element: <CartPage />,
+			},
+			{
+				path: "movie",
+				element: <MoviePage />,
+			},
+		],
 	},
 ];
 
