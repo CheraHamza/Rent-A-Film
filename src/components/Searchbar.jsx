@@ -1,6 +1,8 @@
 import { SearchIcon } from "lucide-react";
 import styled from "styled-components";
 import Button from "./Button";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StyledSearchBar = styled.div`
 	display: flex;
@@ -33,10 +35,26 @@ const StyledIcon = styled(SearchIcon)`
 `;
 
 const Searchbar = () => {
+	const [inputValue, setInputValue] = useState("");
+
+	const navigate = useNavigate();
+
+	const onInputChange = (e) => {
+		setInputValue(e.target.value);
+	};
+
+	const onSearch = () => {
+		navigate(`/catalog/search=${inputValue}`);
+	};
+
 	return (
 		<StyledSearchBar>
-			<Styledinput placeholder="Search..."></Styledinput>
-			<StyledButton>
+			<Styledinput
+				onChange={onInputChange}
+				value={inputValue}
+				placeholder="Search..."
+			></Styledinput>
+			<StyledButton onClick={onSearch}>
 				<StyledIcon className="icon"></StyledIcon>
 			</StyledButton>
 		</StyledSearchBar>
