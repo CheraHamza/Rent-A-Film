@@ -1,4 +1,4 @@
-const data = {
+const userData = {
 	wishlist: [
 		{
 			id: 238,
@@ -24,4 +24,4 @@ const data = {
 	],
 };
 
-export { data };
+export { userData };
