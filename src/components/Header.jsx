@@ -21,8 +21,8 @@ const StyledLogo = styled.img`
 	height: 40px;
 `;
 
-const Header = ({ data, onTop = false }) => {
-	const cartCount = data.cart.length;
+const Header = ({ userData, onTop = false }) => {
+	const cartCount = userData.cart.length;
 
 	return (
 		<StyledHeader className={onTop ? "onTop" : ""}>

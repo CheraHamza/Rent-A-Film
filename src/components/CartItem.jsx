@@ -90,10 +90,10 @@ const RemoveItemButton = styled(Button)`
 	}
 `;
 
-const CartItem = ({ id, poster, title, year, days, price, setData }) => {
+const CartItem = ({ id, poster, title, year, days, price, setUserData }) => {
 	const handleIncrement = () => {
 		if (days < 10) {
-			setData((prevData) => ({
+			setUserData((prevData) => ({
 				...prevData,
 				cart: prevData.cart.map((item) =>
 					item.id === id ? { ...item, days: item.days + 1 } : item
@@ -104,7 +104,7 @@ const CartItem = ({ id, poster, title, year, days, price, setData }) => {
 
 	const handleDecrement = () => {
 		if (days > 1) {
-			setData((prevData) => ({
+			setUserData((prevData) => ({
 				...prevData,
 				cart: prevData.cart.map((item) =>
 					item.id === id ? { ...item, days: item.days - 1 } : item
@@ -114,7 +114,7 @@ const CartItem = ({ id, poster, title, year, days, price, setData }) => {
 	};
 
 	const handleRemoveFromCart = () => {
-		setData((prevData) => ({
+		setUserData((prevData) => ({
 			...prevData,
 			cart: prevData.cart.filter((item) => item.id !== id),
 		}));
