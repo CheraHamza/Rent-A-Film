@@ -1,32 +1,46 @@
 import styled from "styled-components";
-import shoppingcart from "/Icons/shopping-cart.svg";
 import Button from "./Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { ShoppingCartIcon } from "lucide-react";
 
 const StyledCart = styled(Button)`
-	width: 60px;
-	height: 60px;
+	width: 50px;
+	height: 50px;
 	position: relative;
 
-	& img,
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	padding: 5px;
+
+	border: none;
+	border-radius: 3px;
+
+	color: rgb(255, 255, 255, 0.5);
+
+	.lucide {
+		width: 20px;
+	}
+
 	span {
-		transition: opacity 0.15s ease-in-out;
+		font-size: 12px;
 	}
 
-	&:hover img,
-	&:hover span {
-		opacity: 0.5;
+	&:hover {
+		background-color: rgb(255, 255, 255, 0.5);
+		color: black;
 	}
-`;
 
-const StyledImg = styled.img`
-	width: 30px;
-	height: 30px;
+	&.active {
+		color: white;
+	}
 `;
 
 const Counter = styled.span`
-	width: 19px;
-	height: 19px;
+	width: 15px;
+	height: 15px;
 
 	font-size: 12px;
 
@@ -35,7 +49,7 @@ const Counter = styled.span`
 	align-items: center;
 
 	position: absolute;
-	top: 10px;
+	top: 5px;
 	right: 0px;
 
 	background-color: red;
@@ -43,17 +57,20 @@ const Counter = styled.span`
 	border-radius: 50px;
 `;
 
-const CartIcon = ({ count = 2 }) => {
+const CartIcon = ({ count = 0 }) => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const pathname = location.pathname.split("/")[1];
 
 	return (
 		<StyledCart
+			className={pathname === "cart" ? "active" : ""}
 			onClick={() => {
 				navigate("/cart");
 			}}
-			className="borderless"
 		>
-			<StyledImg src={shoppingcart} alt="shopping cart"></StyledImg>
+			<ShoppingCartIcon />
+			<span>Cart</span>
 			<Counter>{count}</Counter>
 		</StyledCart>
 	);
