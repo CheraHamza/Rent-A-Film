@@ -91,6 +91,8 @@ export default function SearchPage() {
 				setSearchResults(fetchedData.results);
 				setNumberOfPages(fetchedData.total_pages);
 			}
+		} else {
+			setSearchResults([]);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fetchedData]);
