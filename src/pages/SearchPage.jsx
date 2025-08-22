@@ -5,6 +5,8 @@ import { useFetchData } from "../utils/Fetch";
 import { format } from "date-fns";
 import Searchbar from "../components/Searchbar";
 import MovieCard from "../components/MovieCard";
+import Button from "../components/Button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const StyledSearchPage = styled.div`
 	display: flex;
@@ -12,6 +14,39 @@ const StyledSearchPage = styled.div`
 	align-items: center;
 
 	flex-grow: 1;
+`;
+
+const PageIndicator = styled.div`
+	width: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	color: rgb(255, 255, 255, 0.8);
+
+	padding-top: 20px;
+
+	div {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+
+		button {
+			width: 25px;
+			height: 25px;
+
+			.lucide {
+				width: 100%;
+				height: 100%;
+			}
+
+			&.disabled {
+				pointer-events: none;
+				visibility: hidden;
+			}
+		}
+	}
 `;
 
 const ContentWrapper = styled.div`
@@ -29,6 +64,7 @@ export default function SearchPage() {
 	const [searchResults, setSearchResults] = useState([]);
 	const [searchParams, setSearchParams] = useSearchParams();
 
+	const [numberOfPages, setNumberOfPages] = useState(0);
 	const [page, setPage] = useState(1);
 
 	const query = searchParams.get("query");
@@ -53,6 +89,7 @@ export default function SearchPage() {
 		if (query) {
 			if (fetchedData) {
 				setSearchResults(fetchedData.results);
+				setNumberOfPages(fetchedData.total_pages);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,12 +99,43 @@ export default function SearchPage() {
 		setPage(1);
 	}, [query]);
 
+	const nextPage = () => {
+		setPage(page + 1);
+	};
+
+	const previousPage = () => {
+		setPage(page - 1);
+	};
+
 	return (
 		<StyledSearchPage>
 			<Searchbar
 				searchQuery={query}
 				setSearchQuery={setSearchQuery}
 			></Searchbar>
+			<PageIndicator>
+				<div>
+					<Button
+						title="Previous page"
+						className={page === 1 ? "disabled borderless" : "borderless"}
+						onClick={previousPage}
+					>
+						<ChevronLeft />
+					</Button>
+
+					<span>{`Page ${page}`}</span>
+
+					<Button
+						title="Next page"
+						className={
+							page >= numberOfPages ? "disabled borderless" : "borderless"
+						}
+						onClick={nextPage}
+					>
+						<ChevronRight />
+					</Button>
+				</div>
+			</PageIndicator>
 			<ContentWrapper>
 				{searchResults.length > 0 &&
 					searchResults.map((item) => (
