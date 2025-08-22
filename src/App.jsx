@@ -19,11 +19,13 @@ const App = () => {
 	const pathname = location.pathname;
 
 	return (
-		<StyledApp>
-			<Header onTop={pathname === "/home"} userData={userData}></Header>
-			<Outlet context={{ userData, setUserData }} />
+		<>
+			<StyledApp>
+				<Header onTop={pathname === "/home"} userData={userData}></Header>
+				<Outlet context={{ userData, setUserData }} />
+			</StyledApp>
 			<Footer />
-		</StyledApp>
+		</>
 	);
 };
 
