@@ -3,7 +3,11 @@ import { useFetchData } from "../utils/Fetch";
 import createMovie from "../utils/movie";
 import Button from "../components/Button";
 import { ArrowLeft, HeartIcon, StarIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import {
+	useNavigate,
+	useOutletContext,
+	useSearchParams,
+} from "react-router-dom";
 
 const StyledMoviePage = styled.div`
 	padding-inline: 40px;
@@ -292,7 +296,24 @@ const RecommendationCard = styled(Button)`
 	}
 `;
 
-const MoviePage = ({ id, data, setData, setMovieDetailView }) => {
+const MoviePage = () => {
+	const { userData, setUserData } = useOutletContext();
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const id = Number.parseInt(searchParams.get("id"));
+
+	const setMovieId = (id) => {
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+			if (id) {
+				newParams.set("id", id);
+			} else {
+				newParams.delete("id");
+			}
+			return newParams;
+		});
+	};
+
 	const { fetchedData } = useFetchData(
 		`https://api.themoviedb.org/3/movie/${id}?append_to_response=recommendations,credits`
 	);
@@ -305,40 +326,43 @@ const MoviePage = ({ id, data, setData, setMovieDetailView }) => {
 		movie = createMovie(fetchedData);
 	}
 
-	const navigateToMovie = (id, title) => {
-		const urlTitle = title.split(" ").join("-").toLowerCase();
-
-		setMovieDetailView({
-			id,
-			title: urlTitle,
-		});
-
-		navigate(`/movie/${id}/${urlTitle}`);
-	};
-
 	const isOnlist = (list) => {
-		return data[list].filter((item) => item.id === id)[0] ? true : false;
+		return userData[list].filter((item) => item.id === id)[0] ? true : false;
 	};
 
-	const handleAddToList = (list) => {
+	const handleAddToCart = () => {
 		let newItem = {
 			id,
-			card_info: {
-				title: movie.title,
-				date: movie.date,
-				rating: movie.rating,
-				poster_url: movie.poster,
-			},
+			title: movie.title,
+			year: movie.year,
+			price: movie.rating,
+			poster_url: movie.poster,
+			days: 1,
 		};
 
-		setData((prevData) => ({
+		setUserData((prevData) => ({
 			...prevData,
-			[list]: [...prevData[list], newItem],
+			cart: [...prevData.cart, newItem],
+		}));
+	};
+
+	const handleAddToWishlist = () => {
+		let newItem = {
+			id,
+			title: movie.title,
+			date: movie.date,
+			rating: movie.rating,
+			poster_url: movie.poster,
+		};
+
+		setUserData((prevData) => ({
+			...prevData,
+			wishlist: [...prevData.wishlist, newItem],
 		}));
 	};
 
 	const handleRemoveFromList = (list) => {
-		setData((prevData) => ({
+		setUserData((prevData) => ({
 			...prevData,
 			[list]: prevData[list].filter((item) => item.id !== id),
 		}));
@@ -349,7 +373,7 @@ const MoviePage = ({ id, data, setData, setMovieDetailView }) => {
 		if (isOnlist(list)) {
 			handleRemoveFromList(list);
 		} else {
-			handleAddToList(list);
+			handleAddToWishlist();
 		}
 	};
 
@@ -360,7 +384,7 @@ const MoviePage = ({ id, data, setData, setMovieDetailView }) => {
 					<NavSection>
 						<BackButton
 							onClick={() => {
-								navigate(-1);
+								navigate(-2);
 							}}
 							className="borderless"
 						>
@@ -409,9 +433,22 @@ const MoviePage = ({ id, data, setData, setMovieDetailView }) => {
 							</div>
 							<div className="cartSection">
 								{!isOnlist("cart") ? (
-									<CartButton className="reverse">Add to Cart</CartButton>
+									<CartButton
+										onClick={() => {
+											handleAddToCart();
+										}}
+										className="reverse"
+									>
+										Add to Cart
+									</CartButton>
 								) : (
-									<CartButton>View in Cart</CartButton>
+									<CartButton
+										onClick={() => {
+											navigate("/cart");
+										}}
+									>
+										View in Cart
+									</CartButton>
 								)}
 							</div>
 						</MovieInfo>
@@ -437,7 +474,7 @@ const MoviePage = ({ id, data, setData, setMovieDetailView }) => {
 								<RecommendationCard
 									key={recommendation.id}
 									onClick={() => {
-										navigateToMovie(recommendation.id, recommendation.title);
+										setMovieId(recommendation.id);
 									}}
 									title={`${recommendation.title} (${recommendation.year})`}
 								>
