@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useFetchData } from "../utils/Fetch";
-import { format } from "date-fns";
 import Searchbar from "../components/Searchbar";
 import MovieCard from "../components/MovieCard";
 import Button from "../components/Button";
@@ -145,15 +144,7 @@ export default function SearchPage() {
 					searchResults.map((item) => (
 						<MovieCard
 							key={item.id}
-							id={item.id}
-							poster={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-							title={item.title}
-							date={
-								item.release_date === ""
-									? "no date!"
-									: format(item.release_date, "MMM dd, yyyy")
-							}
-							rating={item.vote_average.toFixed(1)}
+							movieDetails={item}
 							userData={userData}
 							setUserData={setUserData}
 						></MovieCard>
