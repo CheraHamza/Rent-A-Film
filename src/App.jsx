@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import { useState } from "react";
 import { userData as initUserData } from "./utils/data.js";
 import { Outlet, useLocation } from "react-router-dom";
+import Footer from "./components/Footer.jsx";
 
 const StyledApp = styled.div`
 	min-height: 100vh;
@@ -21,6 +22,7 @@ const App = () => {
 		<StyledApp>
 			<Header onTop={pathname === "/home"} userData={userData}></Header>
 			<Outlet context={{ userData, setUserData }} />
+			<Footer />
 		</StyledApp>
 	);
 };
