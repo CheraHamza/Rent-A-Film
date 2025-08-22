@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import MovieCard from "../components/MovieCard";
 import { useFetchData } from "../utils/Fetch";
-import { format } from "date-fns";
 import Loader from "../components/Loader";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -126,17 +125,9 @@ const CatalogPage = () => {
 								catalog.map((movieDetails) => (
 									<MovieCard
 										key={movieDetails.id}
-										id={movieDetails.id}
-										poster={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
-										title={movieDetails.title}
-										date={
-											movieDetails.release_date === ""
-												? "no date!"
-												: format(movieDetails.release_date, "MMM dd, yyyy")
-										}
-										rating={movieDetails.vote_average.toFixed(1)}
 										userData={userData}
 										setUserData={setUserData}
+										movieDetails={movieDetails}
 									></MovieCard>
 								))}
 						</div>

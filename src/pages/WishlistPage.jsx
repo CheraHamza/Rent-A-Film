@@ -73,14 +73,10 @@ const WishlistPage = () => {
 			<MainSection>
 				{wishlist.map((item) => (
 					<MovieCard
-						id={item.id}
 						key={item.id}
-						title={item.title}
-						date={item.date}
-						rating={item.rating}
-						poster={item.poster_url}
 						userData={userData}
 						setUserData={setUserData}
+						movieDetails={item}
 					></MovieCard>
 				))}
 			</MainSection>

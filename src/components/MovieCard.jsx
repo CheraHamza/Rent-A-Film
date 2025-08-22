@@ -2,6 +2,7 @@ import { HeartIcon, StarIcon } from "lucide-react";
 import Button from "../components/Button";
 import styled from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { format } from "date-fns";
 
 const StyledMovieCard = styled.div`
 	width: 250px;
@@ -118,16 +119,14 @@ const StyledHeartIcon = styled(HeartIcon)`
 	height: 100%;
 `;
 
-const MovieCard = ({
-	id,
-	poster,
-	title,
-	date,
-	rating,
-	userData,
-	setUserData,
-}) => {
+const MovieCard = ({ userData, setUserData, movieDetails }) => {
 	const [searchParams, setSearchParams] = useSearchParams();
+
+	const id = movieDetails.id;
+	const title = movieDetails.title;
+	const poster = `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`;
+	const date = format(movieDetails.release_date, "MMM dd, yyyy");
+	const rating = movieDetails.vote_average.toFixed(1);
 
 	const setMovieId = (id) => {
 		setSearchParams((prev) => {
@@ -167,7 +166,7 @@ const MovieCard = ({
 		let newItem = {
 			id,
 			title,
-			date,
+			date: movieDetails.release_date,
 			rating,
 			poster_url: poster,
 		};
