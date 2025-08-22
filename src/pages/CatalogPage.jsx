@@ -60,6 +60,7 @@ const LoadMoreButton = styled(Button)`
 const CatalogPage = () => {
 	const { userData, setUserData } = useOutletContext();
 	const [catalog, setCatalog] = useState([]);
+
 	const [sortBy, setSortBy] = useState("vote_average.desc");
 	const [genres, setGenres] = useState([]);
 	const [language, setLanguage] = useState("");
@@ -67,6 +68,7 @@ const CatalogPage = () => {
 	const [minimumVotes, setMinimumVotes] = useState([0, 300]);
 	const [runtimeRange, setRuntimeRange] = useState([0, 400]);
 
+	const [numberOfPages, setNumberOfPages] = useState(0);
 	const [page, setPage] = useState(1);
 
 	const genre_ids = genres.map((genre) => genre.id).join(",");
@@ -82,6 +84,8 @@ const CatalogPage = () => {
 			} else {
 				setCatalog((prev) => [...prev, ...fetchedData.results]);
 			}
+
+			setNumberOfPages(fetchedData.total_pages);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fetchedData]);
@@ -137,7 +141,7 @@ const CatalogPage = () => {
 								))}
 						</div>
 						<div className="loadMore">
-							{catalog.length > 0 && (
+							{numberOfPages > page && (
 								<LoadMoreButton onClick={loadMore}>Load More</LoadMoreButton>
 							)}
 						</div>
