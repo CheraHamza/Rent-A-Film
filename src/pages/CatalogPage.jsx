@@ -1,199 +1,150 @@
 import styled from "styled-components";
 import Button from "../components/Button";
-import Searchbar from "../components/Searchbar";
-import { FilterIcon } from "lucide-react";
 import MovieCard from "../components/MovieCard";
 import { useFetchData } from "../utils/Fetch";
 import { format } from "date-fns";
 import Loader from "../components/Loader";
 import { useEffect, useState } from "react";
-import FilterPopup from "../components/FilterPopup";
+import { useOutletContext } from "react-router-dom";
+import FiltersPanel from "../components/FiltersPanel";
 
 const StyledCatalogPage = styled.div`
 	display: flex;
-	flex-direction: column;
 	align-items: center;
 
 	flex-grow: 1;
-`;
-
-const StyledIcon = styled(FilterIcon)`
-	height: 90%;
-	width: 90%;
-`;
-
-const PostersWrapper = styled.section`
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 30px;
 
 	padding: 20px 30px;
 `;
 
-const LoadMoreButton = styled(Button)`
-	width: 400px;
-	height: 45px;
+const MainContainer = styled.section`
+	display: flex;
 
-	margin-block: 20px;
+	gap: 20px;
 `;
 
-const CatalogPage = ({
-	data,
-	setData,
-	catalog,
-	setCatalog,
-	pages,
-	setPages,
-	query,
-	filters,
-	setFilters,
-	setMovieDetailView,
-}) => {
-	const { fetchedData, loading } = useFetchData(query);
-	const [filteredCatalog, setFilteredCatalog] = useState(catalog);
+const FiltersWrapper = styled.section`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+const PostersWrapper = styled.section`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+
+	.posters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 30px;
+		justify-content: center;
+	}
+
+	.loadMore {
+		width: 100%;
+
+		display: flex;
+		justify-content: center;
+	}
+`;
+
+const LoadMoreButton = styled(Button)`
+	width: min(90%, 400px);
+	height: 45px;
+
+	margin-block: 10px;
+`;
+
+const CatalogPage = () => {
+	const { userData, setUserData } = useOutletContext();
+	const [catalog, setCatalog] = useState([]);
+	const [sortBy, setSortBy] = useState("vote_average.desc");
+	const [genres, setGenres] = useState([]);
+	const [language, setLanguage] = useState("");
+	const [ratingRange, setRatingRange] = useState([0, 10]);
+	const [minimumVotes, setMinimumVotes] = useState([0, 300]);
+	const [runtimeRange, setRuntimeRange] = useState([0, 400]);
+
+	const [page, setPage] = useState(1);
+
+	const genre_ids = genres.map((genre) => genre.id).join(",");
+
+	const apiUrl = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=${sortBy}&with_genres=${genre_ids}&vote_count.gte=${minimumVotes[1]}&with_original_language=${language}&vote_average.gte=${ratingRange[0]}&vote_average.lte=${ratingRange[1]}with_runtime.gte=${runtimeRange[0]}&with_runtime.lte=${runtimeRange[1]}`;
+
+	const { fetchedData, loading } = useFetchData(apiUrl);
 
 	useEffect(() => {
 		if (fetchedData) {
-			console.log(fetchedData);
-
-			setCatalog((prevMovies) => [...prevMovies, ...fetchedData.results]);
+			if (page === 1) {
+				setCatalog(fetchedData.results);
+			} else {
+				setCatalog((prev) => [...prev, ...fetchedData.results]);
+			}
 		}
-	}, [fetchedData, setCatalog]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [fetchedData]);
 
 	useEffect(() => {
-		let selectedGenres;
-		let matchesSelectedGenres = [];
-		if (filters.genres.length > 0) {
-			selectedGenres = filters.genres.map((genre) => genre.id);
+		setPage(1);
+	}, [genres, sortBy, language, ratingRange, minimumVotes]);
 
-			catalog.forEach((item) => {
-				const movieGenres = item.genre_ids;
-				if (selectedGenres.every((genre) => movieGenres.includes(genre))) {
-					matchesSelectedGenres.push(item);
-					return;
-				}
-			});
-			console.log(matchesSelectedGenres);
-
-			setFilteredCatalog(matchesSelectedGenres);
-		} else {
-			setFilteredCatalog(catalog);
-		}
-	}, [filters.genres, catalog]);
+	const loadMore = () => {
+		setPage((prev) => prev + 1);
+	};
 
 	return (
 		<StyledCatalogPage>
-			<FilterBar
-				filters={filters}
-				setFilters={setFilters}
-			></FilterBar>
 			{loading ? (
 				<Loader></Loader>
 			) : (
-				<>
+				<MainContainer>
+					<FiltersWrapper>
+						<FiltersPanel
+							genres={genres}
+							setGenres={setGenres}
+							sortby={sortBy}
+							setSortBy={setSortBy}
+							language={language}
+							setLanguage={setLanguage}
+							ratingRange={ratingRange}
+							setRatingRange={setRatingRange}
+							minimumVotes={minimumVotes}
+							setMinimumVotes={setMinimumVotes}
+							runtimeRange={runtimeRange}
+							setRuntimeRange={setRuntimeRange}
+						></FiltersPanel>
+					</FiltersWrapper>
 					<PostersWrapper>
-						{filteredCatalog.length > 0 &&
-							filteredCatalog.map((movieDetails) => (
-								<MovieCard
-									key={movieDetails.id}
-									id={movieDetails.id}
-									poster={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
-									title={movieDetails.title}
-									date={
-										movieDetails.release_date === ""
-											? "no date!"
-											: format(movieDetails.release_date, "MMM dd, yyyy")
-									}
-									rating={movieDetails.vote_average.toFixed(1)}
-									data={data}
-									setData={setData}
-									setMovieDetailView={setMovieDetailView}
-								></MovieCard>
-							))}
+						<div className="posters">
+							{catalog.length > 0 &&
+								catalog.map((movieDetails) => (
+									<MovieCard
+										key={movieDetails.id}
+										id={movieDetails.id}
+										poster={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+										title={movieDetails.title}
+										date={
+											movieDetails.release_date === ""
+												? "no date!"
+												: format(movieDetails.release_date, "MMM dd, yyyy")
+										}
+										rating={movieDetails.vote_average.toFixed(1)}
+										userData={userData}
+										setUserData={setUserData}
+									></MovieCard>
+								))}
+						</div>
+						<div className="loadMore">
+							{catalog.length > 0 && (
+								<LoadMoreButton onClick={loadMore}>Load More</LoadMoreButton>
+							)}
+						</div>
 					</PostersWrapper>
-					{filteredCatalog.length > 0 && (
-						<LoadMoreButton
-							onClick={() => {
-								setPages(pages + 1);
-							}}
-						>
-							Load More
-						</LoadMoreButton>
-					)}
-				</>
+				</MainContainer>
 			)}
 		</StyledCatalogPage>
-	);
-};
-
-const StyledFilterBar = styled.section`
-	width: 100%;
-	display: flex;
-	justify-content: end;
-	gap: 20px;
-
-	padding: 10px 30px;
-
-	.filtersWrapper {
-		position: relative;
-	}
-`;
-
-const FilterButton = styled(Button)`
-	height: 30px;
-
-	display: flex;
-	align-items: center;
-	gap: 5px;
-
-	border: none;
-
-	font-family: "Playfair Display";
-	font-size: 16px;
-	letter-spacing: 1px;
-	padding: 5px 10px;
-
-	&.active {
-		background-color: white;
-		color: black;
-	}
-`;
-
-const FilterBar = ({
-	filters,
-	setFilters,
-}) => {
-	const [active, setActive] = useState(false);
-
-	const toggleActive = () => {
-		setActive(!active);
-	};
-
-	useEffect(() => {
-		const filtersWrapper = document.querySelector(".filtersWrapper");
-
-		document.addEventListener("click", (event) => {
-			if (!filtersWrapper.contains(event.target)) {
-				setActive(false);
-			}
-		});
-	});
-
-	return (
-		<StyledFilterBar>
-			<div className="filtersWrapper">
-				<FilterButton onClick={toggleActive} className={active ? "active" : ""}>
-					<StyledIcon></StyledIcon>
-					Filters
-				</FilterButton>
-				{active && (
-					<FilterPopup filters={filters} setFilters={setFilters}></FilterPopup>
-				)}
-			</div>
-			<Searchbar
-			></Searchbar>
-		</StyledFilterBar>
 	);
 };
 
