@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Button from "./Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { HouseIcon, CompassIcon, LibraryIcon, SearchIcon } from "lucide-react";
 
 const StyledNavbar = styled.div`
 	display: flex;
@@ -8,43 +9,86 @@ const StyledNavbar = styled.div`
 	gap: 50px;
 `;
 
+const NavButton = styled(Button)`
+	width: 50px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	padding: 5px;
+
+	border: none;
+	border-radius: 3px;
+
+	color: rgb(255, 255, 255, 0.5);
+
+	.lucide {
+		width: 20px;
+	}
+
+	span {
+		font-size: 12px;
+	}
+
+	&:hover {
+		background-color: rgb(255, 255, 255, 0.5);
+		color: black;
+	}
+
+	&.active {
+		color: white;
+	}
+`;
+
 const Navbar = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const pathname = location.pathname.split("/")[1];
 
 	return (
 		<StyledNavbar>
-			<Button
-				className="borderless"
+			<NavButton
+				className={pathname === "home" ? "active" : ""}
+				title="Home"
 				onClick={() => {
 					navigate("/home");
 				}}
 			>
-				Home
-			</Button>
-			<Button
-				className="borderless"
+				<HouseIcon />
+				<span>Home</span>
+			</NavButton>
+			<NavButton
+				className={pathname === "catalog" ? "active" : ""}
+				title="Catalog"
 				onClick={() => {
 					navigate("/catalog");
 				}}
 			>
-				Catalog
-			</Button>
-			<Button
-				className="borderless"
+				<CompassIcon />
+				<span>Catalog</span>
+			</NavButton>
+			<NavButton
+				className={pathname === "wishlist" ? "active" : ""}
+				title="Wishlist"
 				onClick={() => {
 					navigate("/wishlist");
 				}}
 			>
-				Wishlist
-			</Button>
-			<Button
-				className="borderless"
+				<LibraryIcon />
+				<span>Wishlist</span>
+			</NavButton>
+			<NavButton
+				className={pathname === "search" ? "active" : ""}
+				title="Find"
 				onClick={() => {
 					navigate("/search");
 				}}
 			>
-				Find
-			</Button>
+				<SearchIcon />
+				<span>Find</span>
+			</NavButton>
 		</StyledNavbar>
 	);
 };
