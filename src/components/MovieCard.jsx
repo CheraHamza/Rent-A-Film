@@ -172,7 +172,7 @@ const MovieCard = ({ userData, setUserData, movieDetails }) => {
 		let newItem = {
 			id,
 			title,
-			date: movieDetails.release_date,
+			release_date: movieDetails.release_date,
 			vote_average: movieDetails.vote_average,
 			poster_path: movieDetails.poster_path,
 		};
