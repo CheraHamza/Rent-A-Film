@@ -5,13 +5,10 @@ import { useState } from "react";
 import MovieCard from "../components/MovieCard.jsx";
 import { useOutletContext } from "react-router-dom";
 
-const StyledWishList = styled.div``;
-
 const SortBar = styled.section`
 	width: 100%;
 	display: flex;
 	justify-content: end;
-	gap: 20px;
 
 	padding: 10px 30px;
 `;
@@ -25,8 +22,7 @@ const SortButton = styled(Button)`
 
 	border: none;
 
-	font-family: "Playfair Display";
-	font-size: 16px;
+	font-size: 14px;
 	letter-spacing: 1px;
 	padding: 5px 10px;
 
@@ -52,7 +48,7 @@ const WishlistPage = () => {
 		order === "Newest" ? [...userData.wishlist].reverse() : userData.wishlist;
 
 	return (
-		<StyledWishList>
+		<div>
 			<SortBar>
 				{order === "Newest" ? (
 					<SortButton
@@ -88,7 +84,7 @@ const WishlistPage = () => {
 					></MovieCard>
 				))}
 			</MainSection>
-		</StyledWishList>
+		</div>
 	);
 };
 
