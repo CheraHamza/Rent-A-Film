@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Button from "../components/Button";
 import { SortAsc, SortDesc } from "lucide-react";
-import Searchbar from "../components/Searchbar";
 import { useState } from "react";
 import MovieCard from "../components/MovieCard.jsx";
+import { useOutletContext } from "react-router-dom";
 
 const StyledWishList = styled.div``;
 
@@ -44,11 +44,12 @@ const MainSection = styled.section`
 	padding: 20px 30px;
 `;
 
-const WishlistPage = ({ data, setData, setMovieDetailView }) => {
+const WishlistPage = () => {
+	const { userData, setUserData } = useOutletContext();
 	const [order, setOrder] = useState("Newest");
 
 	let wishlist =
-		order === "Newest" ? [...data.wishlist].reverse() : data.wishlist;
+		order === "Newest" ? [...userData.wishlist].reverse() : userData.wishlist;
 
 	return (
 		<StyledWishList>
@@ -72,8 +73,6 @@ const WishlistPage = ({ data, setData, setMovieDetailView }) => {
 						Oldest
 					</SortButton>
 				)}
-
-				<Searchbar></Searchbar>
 			</SortBar>
 			<MainSection>
 				{wishlist.map((item) => (
@@ -84,9 +83,8 @@ const WishlistPage = ({ data, setData, setMovieDetailView }) => {
 						date={item.date}
 						rating={item.rating}
 						poster={item.poster_url}
-						data={data}
-						setData={setData}
-						setMovieDetailView={setMovieDetailView}
+						userData={userData}
+						setUserData={setUserData}
 					></MovieCard>
 				))}
 			</MainSection>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CartItem from "../components/CartItem";
 import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const StyledCartPage = styled.div`
 	height: calc(100vh - 70px);
@@ -83,11 +83,12 @@ const CheckoutButton = styled(Button)`
 	}
 `;
 
-const CartPage = ({ data, setData }) => {
+const CartPage = () => {
+	const { userData, setUserData } = useOutletContext();
 	const navigate = useNavigate();
 
 	const handleCheckout = () => {
-		setData((prevData) => ({
+		setUserData((prevData) => ({
 			...prevData,
 			cart: [],
 		}));
@@ -98,7 +99,7 @@ const CartPage = ({ data, setData }) => {
 
 	const totalPrice = () => {
 		let price = 0;
-		data.cart.forEach((item) => {
+		userData.cart.forEach((item) => {
 			price = price + item.price * item.days;
 		});
 
@@ -110,7 +111,7 @@ const CartPage = ({ data, setData }) => {
 	return (
 		<StyledCartPage>
 			<CartItemWrapper>
-				{data.cart.map((item) => (
+				{userData.cart.map((item) => (
 					<CartItem
 						key={item.id}
 						id={item.id}
@@ -119,8 +120,7 @@ const CartPage = ({ data, setData }) => {
 						year={item.year}
 						days={item.days}
 						price={item.price}
-						data={data}
-						setData={setData}
+						setUserData={setUserData}
 					></CartItem>
 				))}
 			</CartItemWrapper>
@@ -145,7 +145,7 @@ const CartPage = ({ data, setData }) => {
 				</div>
 				<CheckoutButton
 					onClick={handleCheckout}
-					className={data.cart.length > 0 ? "reverse" : "reverse disabled"}
+					className={userData.cart.length > 0 ? "reverse" : "reverse disabled"}
 				>
 					Checkout
 				</CheckoutButton>
