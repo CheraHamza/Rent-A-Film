@@ -5,7 +5,8 @@ import { useFetchData } from "../utils/Fetch";
 import Searchbar from "../components/Searchbar";
 import MovieCard from "../components/MovieCard";
 import Button from "../components/Button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, SearchIcon, WindIcon } from "lucide-react";
+import ContentPlaceholder from "../components/ContentPlaceholder";
 
 const StyledSearchPage = styled.div`
 	display: flex;
@@ -150,6 +151,18 @@ export default function SearchPage() {
 						></MovieCard>
 					))}
 			</ContentWrapper>
+			{query && searchResults.length <= 0 && (
+				<ContentPlaceholder
+					illustration={<WindIcon />}
+					text={"Oops, no results found!"}
+				/>
+			)}
+			{!query && (
+				<ContentPlaceholder
+					illustration={<SearchIcon />}
+					text={"Search for a movie to get results!"}
+				/>
+			)}
 		</StyledSearchPage>
 	);
 }
