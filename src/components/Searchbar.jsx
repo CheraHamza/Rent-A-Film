@@ -22,7 +22,7 @@ const Styledinput = styled.input`
 `;
 
 const Searchbar = ({ searchQuery, setSearchQuery }) => {
-	const [inputValue, setInputValue] = useState(searchQuery);
+	const [inputValue, setInputValue] = useState(searchQuery || "");
 
 	const onInputChange = (e) => {
 		setInputValue(e.target.value);
