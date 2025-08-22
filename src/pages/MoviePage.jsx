@@ -11,7 +11,7 @@ import {
 import { useEffect } from "react";
 
 const StyledMoviePage = styled.div`
-	padding-inline: 40px;
+	padding: 30px;
 
 	display: flex;
 	flex-direction: column;

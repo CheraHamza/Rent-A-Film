@@ -15,7 +15,7 @@ const StyledCatalogPage = styled.div`
 
 	flex-grow: 1;
 
-	padding: 20px 30px;
+	padding: 30px;
 `;
 
 const MainContainer = styled.section`
