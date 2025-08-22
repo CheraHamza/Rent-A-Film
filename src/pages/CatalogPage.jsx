@@ -6,6 +6,8 @@ import Loader from "../components/Loader";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import FiltersPanel from "../components/FiltersPanel";
+import ContentPlaceholcer from "../components/ContentPlaceholder";
+import { WindIcon } from "lucide-react";
 
 const StyledCatalogPage = styled.div`
 	display: flex;
@@ -18,7 +20,7 @@ const StyledCatalogPage = styled.div`
 
 const MainContainer = styled.section`
 	display: flex;
-
+	flex-grow: 1;
 	gap: 20px;
 `;
 
@@ -137,6 +139,12 @@ const CatalogPage = () => {
 							)}
 						</div>
 					</PostersWrapper>
+					{fetchedData && catalog.length <= 0 && (
+						<ContentPlaceholcer
+							illustration={<WindIcon />}
+							text={"Oops, no results found!"}
+						/>
+					)}
 				</MainContainer>
 			)}
 		</StyledCatalogPage>

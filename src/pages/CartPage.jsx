@@ -2,6 +2,8 @@ import styled from "styled-components";
 import CartItem from "../components/CartItem";
 import Button from "../components/Button";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import ContentPlaceholder from "../components/ContentPlaceholder";
+import { WindIcon } from "lucide-react";
 
 const StyledCartPage = styled.div`
 	height: calc(100vh - 70px);
@@ -118,6 +120,13 @@ const CartPage = () => {
 						movieDetails={item}
 					></CartItem>
 				))}
+
+				{userData.cart.length <= 0 && (
+					<ContentPlaceholder
+						illustration={<WindIcon />}
+						text={"Cart is empty!"}
+					/>
+				)}
 			</CartItemWrapper>
 			<CheckoutWrapper>
 				<h1>Summary</h1>
