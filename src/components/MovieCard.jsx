@@ -39,7 +39,8 @@ const MovieDetails = styled.div`
 	padding: 10px 10px 25px;
 
 	h2 {
-		font-size: 14px;
+		font-weight: 500;
+		font-size: 13px;
 		color: rgba(255, 255, 255, 0.8);
 	}
 `;
@@ -121,7 +122,7 @@ const StyledHeartIcon = styled(HeartIcon)`
 `;
 
 const MovieCard = ({ userData, setUserData, movieDetails }) => {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [, setSearchParams] = useSearchParams();
 
 	const id = movieDetails.id;
 	const title = movieDetails.title;
@@ -130,7 +131,7 @@ const MovieCard = ({ userData, setUserData, movieDetails }) => {
 		: posterUnavailble;
 	const date = movieDetails.release_date
 		? format(movieDetails.release_date, "MMM dd, yyyy")
-		: "";
+		: "Date Unavailable";
 	const rating = movieDetails.vote_average.toFixed(1);
 
 	const setMovieId = (id) => {
