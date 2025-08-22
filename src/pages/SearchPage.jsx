@@ -101,6 +101,10 @@ export default function SearchPage() {
 		setPage(1);
 	}, [query]);
 
+	useEffect(() => {
+		document.querySelector(".searchBar").focus();
+	});
+
 	const nextPage = () => {
 		setPage(page + 1);
 	};

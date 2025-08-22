@@ -36,6 +36,7 @@ const Searchbar = ({ searchQuery, setSearchQuery }) => {
 	return (
 		<StyledSearchBar>
 			<Styledinput
+				className="searchBar"
 				onChange={onInputChange}
 				value={inputValue}
 				placeholder="Search for a movie..."
