@@ -24,7 +24,7 @@ const createMovie = (movieDetails) => {
 		return `${hours}h ${minutes}m`;
 	})();
 
-	const rating = movieDetails.vote_average;
+	const rating = movieDetails.vote_average ? movieDetails.vote_average : "0.0";
 	const formatedRating = movieDetails.vote_average.toFixed(1);
 	const tagline = movieDetails.tagline;
 	const overview = movieDetails.overview;

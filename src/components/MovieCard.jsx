@@ -132,7 +132,9 @@ const MovieCard = ({ userData, setUserData, movieDetails }) => {
 	const date = movieDetails.release_date
 		? format(movieDetails.release_date, "MMM dd, yyyy")
 		: "Date Unavailable";
-	const rating = movieDetails.vote_average.toFixed(1);
+	const rating = movieDetails.vote_average
+		? movieDetails.vote_average.toFixed(1)
+		: "0.0";
 
 	const setMovieId = (id) => {
 		setSearchParams((prev) => {
@@ -173,7 +175,9 @@ const MovieCard = ({ userData, setUserData, movieDetails }) => {
 			id,
 			title,
 			release_date: movieDetails.release_date,
-			vote_average: movieDetails.vote_average,
+			vote_average: movieDetails.vote_average
+				? movieDetails.vote_average
+				: "0.0",
 			poster_path: movieDetails.poster_path,
 		};
 
