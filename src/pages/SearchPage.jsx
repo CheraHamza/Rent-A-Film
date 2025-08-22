@@ -114,27 +114,29 @@ export default function SearchPage() {
 				setSearchQuery={setSearchQuery}
 			></Searchbar>
 			<PageIndicator>
-				<div>
-					<Button
-						title="Previous page"
-						className={page === 1 ? "disabled borderless" : "borderless"}
-						onClick={previousPage}
-					>
-						<ChevronLeft />
-					</Button>
+				{searchResults.length > 0 && (
+					<div>
+						<Button
+							title="Previous page"
+							className={page === 1 ? "disabled borderless" : "borderless"}
+							onClick={previousPage}
+						>
+							<ChevronLeft />
+						</Button>
 
-					<span>{`Page ${page}`}</span>
+						<span>{`Page ${page}`}</span>
 
-					<Button
-						title="Next page"
-						className={
-							page >= numberOfPages ? "disabled borderless" : "borderless"
-						}
-						onClick={nextPage}
-					>
-						<ChevronRight />
-					</Button>
-				</div>
+						<Button
+							title="Next page"
+							className={
+								page >= numberOfPages ? "disabled borderless" : "borderless"
+							}
+							onClick={nextPage}
+						>
+							<ChevronRight />
+						</Button>
+					</div>
+				)}
 			</PageIndicator>
 			<ContentWrapper>
 				{searchResults.length > 0 &&
