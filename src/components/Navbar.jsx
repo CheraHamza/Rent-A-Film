@@ -39,6 +39,7 @@ const NavButton = styled(Button)`
 	}
 
 	&.active {
+		color: white;
 		opacity: 1;
 	}
 `;
