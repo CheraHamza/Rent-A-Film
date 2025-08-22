@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CartItem from "../components/CartItem";
 import Button from "../components/Button";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import ContentPlaceholder from "../components/ContentPlaceholder";
 import { WindIcon } from "lucide-react";
 
@@ -87,7 +87,6 @@ const CheckoutButton = styled(Button)`
 
 const CartPage = () => {
 	const { userData, setUserData } = useOutletContext();
-	const navigate = useNavigate();
 
 	const handleCheckout = () => {
 		setUserData((prevData) => ({
@@ -96,7 +95,6 @@ const CartPage = () => {
 		}));
 
 		alert("Thank you for your trust!");
-		navigate("/catalog");
 	};
 
 	const totalPrice = () => {
@@ -108,7 +106,9 @@ const CartPage = () => {
 		return price;
 	};
 
-	const discount = 5;
+	let discount = Math.floor(totalPrice() / 30) * 5;
+
+	let subtotal = totalPrice() - discount;
 
 	return (
 		<StyledCartPage>
@@ -145,7 +145,7 @@ const CartPage = () => {
 				<hr />
 				<div className="totalRow">
 					<p>Subtotal</p>
-					<p>{`$${(totalPrice() - discount).toFixed(2)}`}</p>
+					<p>{`$${subtotal.toFixed(2)}`}</p>
 				</div>
 				<CheckoutButton
 					onClick={handleCheckout}
