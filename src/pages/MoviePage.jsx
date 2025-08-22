@@ -8,6 +8,7 @@ import {
 	useOutletContext,
 	useSearchParams,
 } from "react-router-dom";
+import { useEffect } from "react";
 
 const StyledMoviePage = styled.div`
 	padding-inline: 40px;
@@ -323,6 +324,8 @@ const MoviePage = () => {
 	let movie;
 
 	if (fetchedData) {
+		console.log(fetchedData);
+
 		movie = createMovie(fetchedData);
 	}
 
@@ -336,7 +339,7 @@ const MoviePage = () => {
 			title: movie.title,
 			year: movie.year,
 			price: movie.rating,
-			poster_url: movie.poster,
+			poster_path: movie.poster_path,
 			days: 1,
 		};
 
@@ -350,9 +353,9 @@ const MoviePage = () => {
 		let newItem = {
 			id,
 			title: movie.title,
-			date: movie.date,
-			rating: movie.rating,
-			poster_url: movie.poster,
+			release_date: movie.date,
+			vote_average: movie.rating,
+			poster_path: movie.poster_path,
 		};
 
 		setUserData((prevData) => ({
@@ -376,6 +379,10 @@ const MoviePage = () => {
 			handleAddToWishlist();
 		}
 	};
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [id]);
 
 	return (
 		<StyledMoviePage>
@@ -417,7 +424,7 @@ const MoviePage = () => {
 								</LikeButton>
 							</div>
 							<div className="ratingSection">
-								<h1>{movie.rating}</h1>
+								<h1>{movie.formatedRating}</h1>
 								<StarIcon></StarIcon>
 							</div>
 							<div className="taglineSection">
