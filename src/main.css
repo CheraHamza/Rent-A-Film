@@ -1,16 +1,11 @@
 @font-face {
-	font-family: "DM Serif Display";
-	src: url("/Fonts/DMSerifDisplay.ttf") format("truetype");
-}
-@font-face {
-	font-family: "PlayFair Display";
-	src: url("/Fonts/PlayfairDisplay.ttf") format("truetype");
+	font-family: "Source Sans Pro";
+	src: url("/Fonts/SourceSans.ttf") format("truetype");
 }
 
 * {
-	font-family: "DM Serif Display";
+	font-family: "Source Sans Pro";
 	font-size: 16px;
-	font-weight: 400;
 
 	box-sizing: border-box;
 	margin: 0;
