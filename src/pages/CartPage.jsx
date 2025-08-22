@@ -114,13 +114,8 @@ const CartPage = () => {
 				{userData.cart.map((item) => (
 					<CartItem
 						key={item.id}
-						id={item.id}
-						poster={item.poster_url}
-						title={item.title}
-						year={item.year}
-						days={item.days}
-						price={item.price}
 						setUserData={setUserData}
+						movieDetails={item}
 					></CartItem>
 				))}
 			</CartItemWrapper>

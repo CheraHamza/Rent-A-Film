@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import posterUnavailble from "/Images/unavailable_poster.jpg";
 import Counter from "./Counter";
 import Button from "./Button";
 import { X } from "lucide-react";
@@ -90,7 +91,16 @@ const RemoveItemButton = styled(Button)`
 	}
 `;
 
-const CartItem = ({ id, poster, title, year, days, price, setUserData }) => {
+const CartItem = ({ setUserData, movieDetails }) => {
+	const id = movieDetails.id;
+	const title = movieDetails.title;
+	const year = movieDetails.year;
+	const poster = movieDetails.poster_path
+		? `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`
+		: posterUnavailble;
+	const days = movieDetails.days;
+	const price = movieDetails.price;
+
 	const handleIncrement = () => {
 		if (days < 10) {
 			setUserData((prevData) => ({
