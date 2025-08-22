@@ -22,7 +22,7 @@ const NavButton = styled(Button)`
 	border: none;
 	border-radius: 3px;
 
-	color: rgb(255, 255, 255, 0.5);
+	opacity: 0.5;
 
 	.lucide {
 		width: 20px;
@@ -35,10 +35,11 @@ const NavButton = styled(Button)`
 	&:hover {
 		background-color: rgb(255, 255, 255, 0.5);
 		color: black;
+		opacity: 1;
 	}
 
 	&.active {
-		color: white;
+		opacity: 1;
 	}
 `;
 

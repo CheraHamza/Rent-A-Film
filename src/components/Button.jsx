@@ -9,7 +9,8 @@ const Button = styled.button`
 
 	cursor: pointer;
 
-	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+	transition: opacity 0.15s ease-in-out, color 0.15s ease-in-out,
+		background-color 0.15s ease-in-out;
 
 	&:hover {
 		color: black;
