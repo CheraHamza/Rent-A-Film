@@ -1,7 +1,7 @@
 import { HeartIcon, StarIcon } from "lucide-react";
 import Button from "../components/Button";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const StyledMovieCard = styled.div`
 	width: 250px;
@@ -124,14 +124,27 @@ const MovieCard = ({
 	title,
 	date,
 	rating,
-	data,
-	setData,
-	setMovieDetailView,
+	userData,
+	setUserData,
 }) => {
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const setMovieId = (id) => {
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+			if (id) {
+				newParams.set("id", id);
+			} else {
+				newParams.delete("id");
+			}
+			return newParams;
+		});
+	};
+
 	const navigate = useNavigate();
 
 	const isOnlist = (list) => {
-		return data[list].filter((item) => item.id === id)[0] ? true : false;
+		return userData[list].filter((item) => item.id === id)[0] ? true : false;
 	};
 
 	const handleAddToCart = () => {
@@ -144,7 +157,7 @@ const MovieCard = ({
 			days: 1,
 		};
 
-		setData((prevData) => ({
+		setUserData((prevData) => ({
 			...prevData,
 			cart: [...prevData.cart, newItem],
 		}));
@@ -159,14 +172,14 @@ const MovieCard = ({
 			poster_url: poster,
 		};
 
-		setData((prevData) => ({
+		setUserData((prevData) => ({
 			...prevData,
 			wishlist: [...prevData.wishlist, newItem],
 		}));
 	};
 
 	const handleRemoveFromList = (list) => {
-		setData((prevData) => ({
+		setUserData((prevData) => ({
 			...prevData,
 			[list]: prevData[list].filter((item) => item.id !== id),
 		}));
@@ -181,14 +194,9 @@ const MovieCard = ({
 		}
 	};
 
-	const handleMovieClick = () => {
-		const urlTitle = title.split(" ").join("-").toLowerCase();
-
-		setMovieDetailView({
-			id,
-			title: urlTitle,
-		});
-		navigate(`/movie/${id}/${urlTitle}`);
+	const handleMovieNavigation = (id) => {
+		navigate("/movie");
+		setMovieId(id);
 	};
 
 	return (
@@ -202,12 +210,7 @@ const MovieCard = ({
 						<StyledHeartIcon></StyledHeartIcon>
 					</LikeButton>
 					{!isOnlist("cart") ? (
-						<CartButton
-							className="reverse"
-							onClick={() => {
-								handleAddToCart();
-							}}
-						>
+						<CartButton className="reverse" onClick={handleAddToCart}>
 							Add to Cart
 						</CartButton>
 					) : (
@@ -228,7 +231,9 @@ const MovieCard = ({
 					<p>{rating}</p>
 				</Rating>
 				<TitleButton
-					onClick={handleMovieClick}
+					onClick={() => {
+						handleMovieNavigation(id);
+					}}
 					className="borderless"
 					title={title}
 				>
