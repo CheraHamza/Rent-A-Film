@@ -1,4 +1,5 @@
 import { HeartIcon, StarIcon } from "lucide-react";
+import posterUnavailble from "/Images/unavailable_poster.jpg";
 import Button from "../components/Button";
 import styled from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -124,8 +125,12 @@ const MovieCard = ({ userData, setUserData, movieDetails }) => {
 
 	const id = movieDetails.id;
 	const title = movieDetails.title;
-	const poster = `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`;
-	const date = format(movieDetails.release_date, "MMM dd, yyyy");
+	const poster = movieDetails.poster_path
+		? `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`
+		: posterUnavailble;
+	const date = movieDetails.release_date
+		? format(movieDetails.release_date, "MMM dd, yyyy")
+		: "";
 	const rating = movieDetails.vote_average.toFixed(1);
 
 	const setMovieId = (id) => {
@@ -152,7 +157,7 @@ const MovieCard = ({ userData, setUserData, movieDetails }) => {
 			title,
 			year: date.split(", ")[1],
 			price: rating,
-			poster_url: poster,
+			poster_path: movieDetails.poster_path,
 			days: 1,
 		};
 
@@ -167,8 +172,8 @@ const MovieCard = ({ userData, setUserData, movieDetails }) => {
 			id,
 			title,
 			date: movieDetails.release_date,
-			rating,
-			poster_url: poster,
+			vote_average: movieDetails.vote_average,
+			poster_path: movieDetails.poster_path,
 		};
 
 		setUserData((prevData) => ({
