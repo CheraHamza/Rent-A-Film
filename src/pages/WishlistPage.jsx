@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import Button from "../components/Button";
-import { SortAsc, SortDesc } from "lucide-react";
+import { SortAsc, SortDesc, WindIcon } from "lucide-react";
 import { useState } from "react";
 import MovieCard from "../components/MovieCard.jsx";
 import { useOutletContext } from "react-router-dom";
+import ContentPlaceholder from "../components/ContentPlaceholder.jsx";
 
 const SortBar = styled.section`
 	width: 100%;
@@ -80,6 +81,12 @@ const WishlistPage = () => {
 					></MovieCard>
 				))}
 			</MainSection>
+			{wishlist.length <= 0 && (
+				<ContentPlaceholder
+					illustration={<WindIcon />}
+					text={"Wishlist is empty!"}
+				/>
+			)}
 		</div>
 	);
 };
