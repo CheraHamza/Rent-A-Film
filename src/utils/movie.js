@@ -11,7 +11,7 @@ const createMovie = (movieDetails) => {
 	const date = movieDetails.release_date;
 	const year = movieDetails.release_date
 		? movieDetails.release_date.split("-", 1)
-		: "";
+		: "xxxx";
 
 	const genres = movieDetails.genres.map((genre) => {
 		return genre.name;
