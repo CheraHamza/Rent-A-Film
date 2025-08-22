@@ -6,6 +6,7 @@ import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import MoviePage from "./pages/MoviePage";
 import WishlistPage from "./pages/WishlistPage";
+import SearchPage from "./pages/SearchPage";
 
 const routes = [
 	{
@@ -36,6 +37,10 @@ const routes = [
 			{
 				path: "movie",
 				element: <MoviePage />,
+			},
+			{
+				path: "search",
+				element: <SearchPage />,
 			},
 		],
 	},
