@@ -7,6 +7,7 @@ import MovieCard from "../components/MovieCard";
 import Button from "../components/Button";
 import { ChevronLeft, ChevronRight, SearchIcon, WindIcon } from "lucide-react";
 import ContentPlaceholder from "../components/ContentPlaceholder";
+import Loader from "../components/Loader";
 
 const StyledSearchPage = styled.div`
 	display: flex;
@@ -83,7 +84,15 @@ export default function SearchPage() {
 		});
 	};
 
-	const { fetchedData } = useFetchData(apiUrl);
+	const { fetchedData, loading, error } = useFetchData(apiUrl);
+
+	useEffect(() => {
+		if (error) {
+			throw new Error(
+				`${error.message}: an error has occurred while fetching search results.`
+			);
+		}
+	}, [error]);
 
 	useEffect(() => {
 		if (query) {
@@ -119,43 +128,51 @@ export default function SearchPage() {
 				searchQuery={query}
 				setSearchQuery={setSearchQuery}
 			></Searchbar>
-			<PageIndicator>
-				{searchResults.length > 0 && (
-					<div>
-						<Button
-							title="Previous page"
-							className={page === 1 ? "disabled borderless" : "borderless"}
-							onClick={previousPage}
-						>
-							<ChevronLeft />
-						</Button>
 
-						<span>{`Page ${page}`}</span>
+			{query && loading ? (
+				<Loader />
+			) : (
+				<>
+					<PageIndicator>
+						{searchResults.length > 0 && (
+							<div>
+								<Button
+									title="Previous page"
+									className={page === 1 ? "disabled borderless" : "borderless"}
+									onClick={previousPage}
+								>
+									<ChevronLeft />
+								</Button>
 
-						<Button
-							title="Next page"
-							className={
-								page >= numberOfPages ? "disabled borderless" : "borderless"
-							}
-							onClick={nextPage}
-						>
-							<ChevronRight />
-						</Button>
-					</div>
-				)}
-			</PageIndicator>
-			<ContentWrapper>
-				{searchResults.length > 0 &&
-					searchResults.map((item) => (
-						<MovieCard
-							key={item.id}
-							movieDetails={item}
-							userData={userData}
-							setUserData={setUserData}
-						></MovieCard>
-					))}
-			</ContentWrapper>
-			{query && searchResults.length <= 0 && (
+								<span>{`Page ${page}`}</span>
+
+								<Button
+									title="Next page"
+									className={
+										page >= numberOfPages ? "disabled borderless" : "borderless"
+									}
+									onClick={nextPage}
+								>
+									<ChevronRight />
+								</Button>
+							</div>
+						)}
+					</PageIndicator>
+					<ContentWrapper>
+						{searchResults.length > 0 &&
+							searchResults.map((item) => (
+								<MovieCard
+									key={item.id}
+									movieDetails={item}
+									userData={userData}
+									setUserData={setUserData}
+								></MovieCard>
+							))}
+					</ContentWrapper>
+				</>
+			)}
+
+			{!loading && query && fetchedData && fetchedData.results.length <= 0 && (
 				<ContentPlaceholder
 					illustration={<WindIcon />}
 					text={"Oops, no results found!"}

@@ -9,6 +9,7 @@ import {
 	useSearchParams,
 } from "react-router-dom";
 import { useEffect } from "react";
+import Loader from "../components/Loader";
 
 const StyledMoviePage = styled.div`
 	padding: 30px;
@@ -16,6 +17,8 @@ const StyledMoviePage = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+
+	flex-grow: 1;
 
 	color: white;
 `;
@@ -304,18 +307,21 @@ const MoviePage = () => {
 	const id = Number.parseInt(searchParams.get("id"));
 
 	const setMovieId = (id) => {
-		setSearchParams((prev) => {
-			const newParams = new URLSearchParams(prev);
-			if (id) {
-				newParams.set("id", id);
-			} else {
-				newParams.delete("id");
-			}
-			return newParams;
-		});
+		setSearchParams(
+			(prev) => {
+				const newParams = new URLSearchParams(prev);
+				if (id) {
+					newParams.set("id", id);
+				} else {
+					newParams.delete("id");
+				}
+				return newParams;
+			},
+			{ replace: true }
+		);
 	};
 
-	const { fetchedData } = useFetchData(
+	const { fetchedData, loading, error } = useFetchData(
 		`https://api.themoviedb.org/3/movie/${id}?append_to_response=recommendations,credits`
 	);
 
@@ -324,8 +330,6 @@ const MoviePage = () => {
 	let movie;
 
 	if (fetchedData) {
-		console.log(fetchedData);
-
 		movie = createMovie(fetchedData);
 	}
 
@@ -384,14 +388,23 @@ const MoviePage = () => {
 		window.scrollTo(0, 0);
 	}, [id]);
 
+	useEffect(() => {
+		if (error) {
+			throw new Error(
+				`${error.message}: an error has occurred while fetching movie details.`
+			);
+		}
+	}, [error]);
+
 	return (
 		<StyledMoviePage>
-			{movie && (
+			{loading && <Loader />}
+			{!loading && movie && (
 				<>
 					<NavSection>
 						<BackButton
 							onClick={() => {
-								navigate(-2);
+								navigate(-1);
 							}}
 							className="borderless"
 						>
@@ -481,6 +494,7 @@ const MoviePage = () => {
 								<RecommendationCard
 									key={recommendation.id}
 									onClick={() => {
+										navigate("/movie");
 										setMovieId(recommendation.id);
 									}}
 									title={`${recommendation.title} (${recommendation.year})`}

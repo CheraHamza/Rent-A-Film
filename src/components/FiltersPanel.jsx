@@ -158,9 +158,17 @@ const FiltersPanel = ({
 
 	// genre filter
 	const [availableGenres, setAvailableGenres] = useState([]);
-	const { fetchedData: fetchedGenres } = useFetchData(
+	const { fetchedData: fetchedGenres, error: genresFetchError } = useFetchData(
 		`https://api.themoviedb.org/3/genre/movie/list?language=en`
 	);
+
+	useEffect(() => {
+		if (genresFetchError) {
+			throw new Error(
+				`${genresFetchError.message}: an error has occurred while fetching genre filters.`
+			);
+		}
+	}, [genresFetchError]);
 
 	const selectedGenres = genres;
 
@@ -186,9 +194,16 @@ const FiltersPanel = ({
 
 	const [languageOptions, setLanguageOptions] = useState([]);
 
-	const { fetchedData: fetchedLanguages } = useFetchData(
-		`https://api.themoviedb.org/3/configuration/languages`
-	);
+	const { fetchedData: fetchedLanguages, error: languagesFetchError } =
+		useFetchData(`https://api.themoviedb.org/3/configuration/languages`);
+
+	useEffect(() => {
+		if (languagesFetchError) {
+			throw new Error(
+				`${languagesFetchError.message}: an error has occurred while fetching language filters.`
+			);
+		}
+	}, [languagesFetchError]);
 
 	useEffect(() => {
 		if (fetchedLanguages) {

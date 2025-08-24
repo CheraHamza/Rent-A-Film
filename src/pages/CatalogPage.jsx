@@ -76,7 +76,15 @@ const CatalogPage = () => {
 
 	const apiUrl = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=${sortBy}&with_genres=${genre_ids}&vote_count.gte=${minimumVotes[1]}&with_original_language=${language}&vote_average.gte=${ratingRange[0]}&vote_average.lte=${ratingRange[1]}with_runtime.gte=${runtimeRange[0]}&with_runtime.lte=${runtimeRange[1]}`;
 
-	const { fetchedData, loading } = useFetchData(apiUrl);
+	const { fetchedData, loading, error } = useFetchData(apiUrl);
+
+	useEffect(() => {
+		if (error) {
+			throw new Error(
+				`${error.message}: an error has occurred while fetching movies.`
+			);
+		}
+	}, [error]);
 
 	useEffect(() => {
 		if (fetchedData) {
@@ -101,26 +109,26 @@ const CatalogPage = () => {
 
 	return (
 		<StyledCatalogPage>
-			{loading ? (
-				<Loader></Loader>
-			) : (
-				<MainContainer>
-					<FiltersWrapper>
-						<FiltersPanel
-							genres={genres}
-							setGenres={setGenres}
-							sortby={sortBy}
-							setSortBy={setSortBy}
-							language={language}
-							setLanguage={setLanguage}
-							ratingRange={ratingRange}
-							setRatingRange={setRatingRange}
-							minimumVotes={minimumVotes}
-							setMinimumVotes={setMinimumVotes}
-							runtimeRange={runtimeRange}
-							setRuntimeRange={setRuntimeRange}
-						></FiltersPanel>
-					</FiltersWrapper>
+			<MainContainer>
+				<FiltersWrapper>
+					<FiltersPanel
+						genres={genres}
+						setGenres={setGenres}
+						sortby={sortBy}
+						setSortBy={setSortBy}
+						language={language}
+						setLanguage={setLanguage}
+						ratingRange={ratingRange}
+						setRatingRange={setRatingRange}
+						minimumVotes={minimumVotes}
+						setMinimumVotes={setMinimumVotes}
+						runtimeRange={runtimeRange}
+						setRuntimeRange={setRuntimeRange}
+					></FiltersPanel>
+				</FiltersWrapper>
+				{loading ? (
+					<Loader />
+				) : (
 					<PostersWrapper>
 						<div className="posters">
 							{catalog.length > 0 &&
@@ -139,14 +147,14 @@ const CatalogPage = () => {
 							)}
 						</div>
 					</PostersWrapper>
-					{fetchedData && catalog.length <= 0 && (
-						<ContentPlaceholcer
-							illustration={<WindIcon />}
-							text={"Oops, no results found!"}
-						/>
-					)}
-				</MainContainer>
-			)}
+				)}
+				{fetchedData && fetchedData.results.length <= 0 && (
+					<ContentPlaceholcer
+						illustration={<WindIcon />}
+						text={"Oops, no results found!"}
+					/>
+				)}
+			</MainContainer>
 		</StyledCatalogPage>
 	);
 };

@@ -21,18 +21,26 @@ const useFetchData = (url) => {
 
 		const fetchData = async () => {
 			try {
+				setData(null);
+				setError(null);
+				setLoading(true);
 				const res = await fetch(url, options);
 
 				if (res.status >= 400) {
-					throw new Error("server error");
+					throw new Error("Server Error");
 				}
 
 				const data = await res.json();
 				setData(data);
 			} catch (err) {
-				setError(err);
+				if (err?.name !== "AbortError") {
+					setError(err);
+					console.error(err);
+				}
 			} finally {
-				setLoading(false);
+				setTimeout(() => {
+					setLoading(false);
+				}, 500);
 			}
 		};
 

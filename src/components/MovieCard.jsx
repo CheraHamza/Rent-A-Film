@@ -137,15 +137,18 @@ const MovieCard = ({ userData, setUserData, movieDetails }) => {
 		: "0.0";
 
 	const setMovieId = (id) => {
-		setSearchParams((prev) => {
-			const newParams = new URLSearchParams(prev);
-			if (id) {
-				newParams.set("id", id);
-			} else {
-				newParams.delete("id");
-			}
-			return newParams;
-		});
+		setSearchParams(
+			(prev) => {
+				const newParams = new URLSearchParams(prev);
+				if (id) {
+					newParams.set("id", id);
+				} else {
+					newParams.delete("id");
+				}
+				return newParams;
+			},
+			{ replace: true }
+		);
 	};
 
 	const navigate = useNavigate();
