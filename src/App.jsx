@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import Header from "./components/Header";
-
-import { useState } from "react";
-import { userData as initUserData } from "./utils/data.js";
+import { useEffect, useState } from "react";
+import { saveData, loadData } from "./utils/data.js";
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./components/Footer.jsx";
 
@@ -13,10 +12,14 @@ const StyledApp = styled.div`
 `;
 
 const App = () => {
-	const [userData, setUserData] = useState(initUserData);
+	const [userData, setUserData] = useState(loadData);
 
 	let location = useLocation();
 	const pathname = location.pathname;
+
+	useEffect(() => {
+		saveData(userData);
+	}, [userData]);
 
 	return (
 		<>

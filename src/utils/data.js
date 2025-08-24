@@ -1,25 +1,15 @@
-const userData = {
-	wishlist: [
-		{
-			id: 238,
-			title: "The Godfather",
-			release_date: "1972-03-14",
-			vote_average: 8.7,
-			poster_path: "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-		},
-	],
-
-	cart: [
-		{
-			id: 238,
-			title: "The Godfather",
-			year: 1972,
-			poster_path: "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-
-			days: 1,
-			price: 9.99,
-		},
-	],
+const initData = {
+	wishlist: [],
+	cart: [],
 };
 
-export { userData };
+function saveData(data) {
+	localStorage.setItem("userData", JSON.stringify(data));
+}
+
+function loadData() {
+	const data = localStorage.getItem("userData");
+	return data ? JSON.parse(data) : initData;
+}
+
+export { saveData, loadData };
