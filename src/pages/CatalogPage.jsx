@@ -6,7 +6,7 @@ import Loader from "../components/Loader";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import FiltersPanel from "../components/FiltersPanel";
-import ContentPlaceholcer from "../components/ContentPlaceholder";
+import ContentPlaceholder from "../components/ContentPlaceholder";
 import { WindIcon } from "lucide-react";
 
 const StyledCatalogPage = styled.div`
@@ -149,7 +149,7 @@ const CatalogPage = () => {
 					</PostersWrapper>
 				)}
 				{fetchedData && fetchedData.results.length <= 0 && (
-					<ContentPlaceholcer
+					<ContentPlaceholder
 						illustration={<WindIcon />}
 						text={"Oops, no results found!"}
 					/>
